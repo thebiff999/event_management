@@ -7,7 +7,7 @@
 #  d) Bitte passen Sie in der nachfolgenden Variablendeklaration den Wert für die Variable HEALTHCHECK_PATH an. Sie ist per Default mit dem Root-Pfad „/“ gefüllt, kann aber auch auf einen anderen URL-Pfad gesetzt werden. Diesen Pfad ruft die Deployment Pipeline nach jedem Deployment auf, um zu prüfen, ob Ihre Anwendung mit Statuscode 200 (=OK) antwortet. Wenn die Pipeline unter dem gespeicherten Pfad keinen Statuscode 200 empfängt, gilt das Deployment und damit der Pipeline-Durchlauf als fehlgeschlagen.
 
 variables: 
-  HEALTHCHECK_PATH: "/geo/user/all" #BITTE DIESEN WERT ANPASSEN!
+  HEALTHCHECK_PATH: "/event"
   #Nur falls der Service nach dem Deployment per HTTPS angesprochen werden soll, müssen die nachfolgenden Zeilen wieder einkommentiert werden!
   #HTTPS: "https"
   #HTTPS_SCHEME: "HTTPS"

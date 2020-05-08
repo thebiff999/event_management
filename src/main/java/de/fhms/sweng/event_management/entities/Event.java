@@ -1,20 +1,18 @@
 package de.fhms.sweng.event_management.entities;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
+@Table (name="EVENT")
 public class Event {
 
     @Id @GeneratedValue
-    private int eventId;
+    private int id;
 
     @ManyToOne
-    private int businessUserId;
+    @Column (name="fk_business_user_id")
+    private BusinessUser user;
 
     private String name;
     private String description;

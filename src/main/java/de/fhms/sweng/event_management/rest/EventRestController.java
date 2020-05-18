@@ -10,7 +10,7 @@ import de.fhms.sweng.event_management.entities.Event;
 @RequestMapping("/event")
 public class EventRestController {
 
-
+/*
     @GetMapping("/byName")
     public void getEventByName(@RequestParam(value="name")String name) {
 
@@ -25,7 +25,7 @@ public class EventRestController {
     public void getEventByUser() {
 
     }
-
+*/
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public void createEvent(@RequestBody Event newEvent) {

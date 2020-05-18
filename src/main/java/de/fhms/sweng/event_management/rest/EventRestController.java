@@ -26,7 +26,7 @@ public class EventRestController {
 
     }
 */
-    @PostMapping("")
+    @PostMapping("/newEvent")
     @ResponseStatus(HttpStatus.CREATED)
     public void createEvent(@RequestBody Event newEvent) {
 

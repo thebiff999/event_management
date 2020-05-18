@@ -22,9 +22,10 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-    public Optional<Event> getEventById(int id) {
-        if (eventRepository.existsById(id)) {
-            return eventRepository.findById(id);
+    public Event getEventById(int id) {
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+        if (optionalEvent.isPresent()) {
+            return optionalEvent.get();
         }
         else throw new ResourceNotFoundException("Event not found");
     }

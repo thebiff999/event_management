@@ -25,7 +25,7 @@ public class EventRestController {
 
     }
 */
-    @GetMapping("/byId")
+    @GetMapping("")
     public Event getEventById(@RequestParam(value="id")int id){
         return eventService.getEventById(id);
     }

@@ -10,13 +10,32 @@ import de.fhms.sweng.event_management.entities.Event;
 @RequestMapping("/event")
 public class EventRestController {
 
-    @GetMapping("/test")
-    public String getTest() {
-        return "Test";
-    }
 
     @GetMapping("/byName")
     public void getEventByName(@RequestParam(value="name")String name) {
 
     }
+
+    @GetMapping("/byId")
+    public void getEventById(@RequestParam(value="id")int id){
+
+    }
+
+    @GetMapping("/byUser")
+    public void getEventByUser() {
+
+    }
+
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createEvent(@RequestBody Event newEvent) {
+
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteEvent(@RequestParam(value="id")int id) {
+
+    }
+
+
 }

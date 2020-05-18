@@ -1,6 +1,6 @@
 package de.fhms.sweng.event_management.entities;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import java.util.Date;
 import javax.persistence.*;
 
 @Entity
@@ -15,7 +15,7 @@ public class Event {
 
     private String name;
     private String description;
-    private DateTimeFormat datetime;
+    private Date datetime;
     private Integer radius;
     private Double longitude;
     private Double lattittude;

@@ -4,23 +4,43 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
-@Table (name="EVENT")
+@Table (name="Event")
 public class Event {
 
     @Id @GeneratedValue
     private int id;
 
-    @ManyToOne
-    private BusinessUser fk_business_user_id;
+    @ManyToOne (fetch =  FetchType.LAZY)
+    private BusinessUser businessUser;
 
     private String name;
     private String description;
     private Date datetime;
-    private Integer radius;
-    private Double longitude;
-    private Double lattittude;
+    private int radius;
 
-    public Event() {
+    @OneToOne
+    private Location location;
+
+    //Contructor with description
+    public Event(BusinessUser businessUser, String name, String description, Date datetime, int radius, double longitude, double latitude) {
+
+        this.businessUser = businessUser;
+        this.name = name;
+        this.description = description;
+        this.datetime = datetime;
+        this.radius = radius;
+        this.location = new Location(longitude,latitude);
+
+    }
+
+    //Constructor without description
+    public Event(BusinessUser businessUser, String name, Date datetime, int radius, double longitude, double latitude) {
+
+        this.businessUser = businessUser;
+        this.name = name;
+        this.datetime = datetime;
+        this.radius = radius;
+        this.location = new Location(longitude,latitude);
 
     }
 

@@ -30,6 +30,22 @@ public class EventService {
         else throw new ResourceNotFoundException("Event not found");
     }
 
+    public Set<Event> getEventByName(String name) {
+        Set<Event> eventSet = eventRepository.findByName(name);
+        if (!(eventSet.isEmpty())) {
+            return eventSet;
+        }
+        else throw new ResourceNotFoundException("Event not found");
+    }
+
+    public Set<Event> getAllEventsByUser(int id) {
+        Set<Event> eventSet = eventRepository.findAllByUserId(id);
+        if (!(eventSet.isEmpty())) {
+            return eventSet;
+        }
+        else throw new ResourceNotFoundException("Event not found");
+    }
+
 
 
 }

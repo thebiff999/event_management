@@ -1,4 +1,4 @@
-package de.fhms.sweng.event_management.rest;
+package de.fhms.sweng.event_management.controller;
 
 import de.fhms.sweng.event_management.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import de.fhms.sweng.event_management.entities.Event;
 
-import java.util.Optional;
+import java.util.Set;
 
 
 @RestController
@@ -25,7 +25,13 @@ public class EventRestController {
 
     }
 */
-    @GetMapping("")
+
+    @GetMapping("byName")
+    public Set<Event> getEventByName(@RequestParam(value="name")String name) {
+        return eventService.getEventByName(name);
+    }
+
+    @GetMapping("/byId")
     public Event getEventById(@RequestParam(value="id")int id){
         return eventService.getEventById(id);
     }

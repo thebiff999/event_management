@@ -13,7 +13,6 @@ public class BusinessUser {
 
     private String name;
 
-    @OneToMany (cascade=CascadeType.ALL)
-    @JoinColumn (name="fk_business_user_id")
+    @OneToMany (cascade=CascadeType.ALL, mappedBy="Business_User")
     private Set<Event> events = new HashSet<Event>();
 }

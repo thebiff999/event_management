@@ -11,7 +11,8 @@ public class Event {
     private int id;
 
     @ManyToOne (fetch =  FetchType.LAZY)
-    private BusinessUser businessUser;
+    @JoinColumn
+    private BusinessUser businessUserId;
 
     private String name;
     private String description;
@@ -24,7 +25,7 @@ public class Event {
     //Contructor with description
     public Event(BusinessUser businessUser, String name, String description, Date datetime, int radius, double longitude, double latitude) {
 
-        this.businessUser = businessUser;
+        this.businessUserId = businessUser;
         this.name = name;
         this.description = description;
         this.datetime = datetime;
@@ -36,7 +37,7 @@ public class Event {
     //Constructor without description
     public Event(BusinessUser businessUser, String name, Date datetime, int radius, double longitude, double latitude) {
 
-        this.businessUser = businessUser;
+        this.businessUserId = businessUser;
         this.name = name;
         this.datetime = datetime;
         this.radius = radius;

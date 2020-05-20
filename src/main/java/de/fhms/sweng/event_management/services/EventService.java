@@ -12,10 +12,12 @@ import java.util.Set;
 public class EventService {
 
     private EventRepository eventRepository;
+    private BusinessUserService businessUserService;
 
     @Autowired
-    public EventService(EventRepository eventRepository){
+    public EventService(EventRepository eventRepository, BusinessUserService businessUserService) {
         this.eventRepository = eventRepository;
+        this.businessUserService = businessUserService;
     }
 
     public Iterable<Event> getEvents() {
@@ -37,7 +39,7 @@ public class EventService {
         }
         else throw new ResourceNotFoundException("Event not found");
     }
-
+/*
     public Set<Event> getAllEventsByUser(int id) {
         Set<Event> eventSet = eventRepository.findAllByUserId(id);
         if (!(eventSet.isEmpty())) {
@@ -45,7 +47,7 @@ public class EventService {
         }
         else throw new ResourceNotFoundException("Event not found");
     }
-
+*/
 
 
 }

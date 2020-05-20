@@ -13,6 +13,6 @@ public interface EventRepository extends CrudRepository<Event, Integer> {
     @Query(value="select e from Event e where e.name like ?1")
     Set<Event> findByName(String name);
 
-    @Query(value="select e.events from BusinessUser where e.id = ?1")
+    @Query(value="select e from Event where e.id = ?1")
     Set<Event> findAllByUserId(int id);
 }

@@ -6,6 +6,10 @@ import javax.persistence.*;
 @Table (name="Location")
 public class Location {
 
+    @Id
+    @GeneratedValue
+    int id;
+
     private Double longitude;
     private Double latitude;
 

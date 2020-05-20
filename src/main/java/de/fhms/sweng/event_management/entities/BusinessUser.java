@@ -1,5 +1,4 @@
 package de.fhms.sweng.event_management.entities;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +12,6 @@ public class BusinessUser {
 
     private String name;
 
-    @OneToMany (cascade=CascadeType.ALL, mappedBy="Business_User")
+    @OneToMany (cascade=CascadeType.ALL, mappedBy="businessUserId")
     private Set<Event> events = new HashSet<Event>();
 }

@@ -29,6 +29,11 @@ public class EventRestController {
     public Event getEventById(@RequestParam(value="id")int id){
         return eventService.getEventById(id);
     }
+
+    @GetMapping("/test")
+    public String getTest() {
+        return "test successful";
+    }
 /*
     @GetMapping("/byUser")
     public void getEventByUser() {

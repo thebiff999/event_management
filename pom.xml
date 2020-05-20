@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>event_service</name>
-	<description>Spring Boot Mircoservice for event handling</description>
+	<description>Spring Boot Microservice for event handling</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

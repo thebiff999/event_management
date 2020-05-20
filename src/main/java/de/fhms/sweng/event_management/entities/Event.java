@@ -29,7 +29,7 @@ public class Event {
         this.description = description;
         this.datetime = datetime;
         this.radius = radius;
-        this.location = new Location(longitude,latitude);
+        this.location = new Location(this, longitude,latitude);
 
     }
 
@@ -40,7 +40,7 @@ public class Event {
         this.name = name;
         this.datetime = datetime;
         this.radius = radius;
-        this.location = new Location(longitude,latitude);
+        this.location = new Location(this,longitude,latitude);
 
     }
 

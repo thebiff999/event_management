@@ -3,7 +3,7 @@ package de.fhms.sweng.event_management.entities;
 import javax.persistence.*;
 
 @Entity
-@Table (name="Location")
+@Table (name="Locations")
 public class Location {
 
     @Id
@@ -13,7 +13,7 @@ public class Location {
     private Double longitude;
     private Double latitude;
 
-    @OneToOne
+    @OneToOne(mappedBy = "location", cascade = CascadeType.ALL)
     @MapsId
     private Event event;
 

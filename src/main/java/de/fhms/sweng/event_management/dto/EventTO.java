@@ -3,13 +3,15 @@ package de.fhms.sweng.event_management.dto;
 import de.fhms.sweng.event_management.entities.Event;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Date;
+
 public class EventTO {
 
     private int id;
     private int businessUserId;
     private String name;
     private String description;
-    private DateTimeFormat datetime;
+    private Date datetime;
     private int radius;
     private double longitude;
     private double latitude;

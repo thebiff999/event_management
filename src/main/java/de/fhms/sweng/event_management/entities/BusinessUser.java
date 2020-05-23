@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table (name="Business_User")
+@Table (name="Business_Users")
 public class BusinessUser {
 
     @Id

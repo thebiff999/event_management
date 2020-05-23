@@ -1,10 +1,11 @@
 package de.fhms.sweng.event_management.entities;
 
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.*;
 
 @Entity
-@Table (name="Event")
+@Table (name="Events")
 public class Event {
 
     @Id @GeneratedValue
@@ -21,6 +22,13 @@ public class Event {
 
     @OneToOne
     private Location location;
+
+    @ManyToMany
+    @JoinTable(
+            name="event_preferences",
+            joinColumns = @JoinColumn(name="event_id"),
+            inverseJoinColumns = @JoinColumn(name="preference_id"))
+    Set<Preference> preferences;
 
     //Contructor with description
     public Event(BusinessUser businessUser, String name, String description, Date datetime, int radius, double longitude, double latitude) {

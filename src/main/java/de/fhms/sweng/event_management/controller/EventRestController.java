@@ -1,5 +1,6 @@
 package de.fhms.sweng.event_management.controller;
 
+import de.fhms.sweng.event_management.dto.EventTO;
 import de.fhms.sweng.event_management.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,20 +20,15 @@ public class EventRestController {
     public EventRestController(EventService eventService) {
         this.eventService = eventService;
     }
-/*
-    @GetMapping("/byName")
-    public void getEventByName(@RequestParam(value="name")String name) {
 
-    }
-*/
 
     @GetMapping("byName")
-    public Set<Event> getEventByName(@RequestParam(value="name")String name) {
+    public Set<EventTO> getEventByName(@RequestParam(value="name")String name) {
         return eventService.getEventByName(name);
     }
 
     @GetMapping("/byId")
-    public Event getEventById(@RequestParam(value="id")int id){
+    public EventTO getEventById(@RequestParam(value="id")int id){
         return eventService.getEventById(id);
     }
 
@@ -42,7 +38,7 @@ public class EventRestController {
     }
 
     @GetMapping("/byUser")
-    public void getEventByUser(@RequestParam(value="id")int id) {
+    public Set<EventTO> getEventByUser(@RequestParam(value="id")int id) {
         return eventService.getAllEventsByUser(id);
     }
 

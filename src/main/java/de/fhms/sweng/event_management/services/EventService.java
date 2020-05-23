@@ -6,6 +6,8 @@ import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import de.fhms.sweng.event_management.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,10 +23,10 @@ public class EventService {
         this.businessUserService = businessUserService;
     }
 
-    public Iterable<EventTO> getEvents() {
+    public Set<EventTO> getEvents() {
 
         Iterable<Event> events = eventRepository.findAll();
-        Set<EventTO> eventTOs = new Set<EventTO>();
+        Set<EventTO> eventTOs = new HashSet<EventTO>();
 
         for (Event e:events) {
             EventTO eventTO = new EventTO(e);
@@ -34,27 +36,45 @@ public class EventService {
 
     }
 
-    public Event getEventById(int id) {
+    public EventTO getEventById(int id) {
+
+        EventTO eventTO;
         Optional<Event> optionalEvent = eventRepository.findById(id);
         if (optionalEvent.isPresent()) {
-            return optionalEvent.get();
+            return eventTO = new EventTO(optionalEvent.get());
         }
         else throw new ResourceNotFoundException("Event not found");
     }
 
-    public Set<Event> getEventByName(String name) {
-        Set<Event> eventSet = eventRepository.findByName(name);
-        if (!(eventSet.isEmpty())) {
-            return eventSet;
+    public Set<EventTO> getEventByName(String name) {
+
+        Set<Event> events = eventRepository.findByName(name);
+        if (!(events.isEmpty())) {
+            Set<EventTO> eventTOs = new HashSet<EventTO>();
+
+            for (Event e:events) {
+                EventTO eventTO = new EventTO(e);
+                eventTOs.add(eventTO);
+            }
+
+            return eventTOs;
         }
         else throw new ResourceNotFoundException("Event not found");
     }
 
 
-    public Set<Event> getAllEventsByUser(int id) {
-        Set<Event> eventSet = eventRepository.findAllByUserId(id);
-        if (!(eventSet.isEmpty())) {
-            return eventSet;
+    public Set<EventTO> getAllEventsByUser(int id) {
+
+        Set<Event> events = eventRepository.findAllByUserId(id);
+        if (!(events.isEmpty())) {
+            Set<EventTO> eventTOs = new HashSet<EventTO>();
+
+            for (Event e:events) {
+                EventTO eventTO = new EventTO(e);
+                eventTOs.add(eventTO);
+            }
+
+            return eventTOs;
         }
         else throw new ResourceNotFoundException("Event not found");
     }

@@ -8,6 +8,7 @@ import java.util.Set;
 public class Preference {
 
     @Id @GeneratedValue
+    @Column (name = "preference_id")
     int id;
 
     private String preference;

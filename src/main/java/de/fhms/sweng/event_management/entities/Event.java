@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class Event {
 
     @Id @GeneratedValue
+    @Column (name="event_id")
     private int id;
 
     @ManyToOne (fetch =  FetchType.LAZY)

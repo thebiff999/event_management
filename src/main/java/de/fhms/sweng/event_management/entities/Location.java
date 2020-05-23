@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Location {
 
     @Id
-    @GeneratedValue
+    @Column (name = "location_id")
     int id;
 
     private Double longitude;

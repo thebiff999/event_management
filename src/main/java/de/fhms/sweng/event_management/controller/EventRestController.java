@@ -40,12 +40,12 @@ public class EventRestController {
     public String getTest() {
         return "test successful";
     }
-/*
-    @GetMapping("/byUser")
-    public void getEventByUser() {
 
+    @GetMapping("/byUser")
+    public void getEventByUser(@RequestParam(value="id")int id) {
+        return eventService.getAllEventsByUser(id)
     }
-*/
+
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public void createEvent(@RequestBody Event newEvent) {

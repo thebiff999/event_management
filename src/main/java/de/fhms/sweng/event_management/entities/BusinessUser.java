@@ -15,3 +15,16 @@ public class BusinessUser {
     @OneToMany (cascade=CascadeType.ALL, mappedBy="businessUserId")
     private Set<Event> events = new HashSet<Event>();
 }
+
+    //Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }

@@ -39,7 +39,8 @@ public class EventService {
         }
         else throw new ResourceNotFoundException("Event not found");
     }
-/*
+
+
     public Set<Event> getAllEventsByUser(int id) {
         Set<Event> eventSet = eventRepository.findAllByUserId(id);
         if (!(eventSet.isEmpty())) {
@@ -47,7 +48,8 @@ public class EventService {
         }
         else throw new ResourceNotFoundException("Event not found");
     }
-*/
+
+
 
 
 }

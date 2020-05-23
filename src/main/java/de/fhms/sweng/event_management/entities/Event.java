@@ -88,7 +88,7 @@ public class Event {
     }
 
     public double getLongitude() {
-        return location.getLongitude()
+        return location.getLongitude();
     }
 
     public void setLongitude(double longitude) {

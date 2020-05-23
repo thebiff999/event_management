@@ -12,9 +12,9 @@ public class BusinessUser {
 
     private String name;
 
-    @OneToMany (cascade=CascadeType.ALL, mappedBy="businessUserId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "businessUserId")
     private Set<Event> events = new HashSet<Event>();
-}
+
 
     //Getters and Setters
     public int getId() {
@@ -28,3 +28,5 @@ public class BusinessUser {
     public void setName(String name) {
         this.name = name;
     }
+
+}

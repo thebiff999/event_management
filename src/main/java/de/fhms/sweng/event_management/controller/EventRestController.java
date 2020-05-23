@@ -43,7 +43,7 @@ public class EventRestController {
 
     @GetMapping("/byUser")
     public void getEventByUser(@RequestParam(value="id")int id) {
-        return eventService.getAllEventsByUser(id)
+        return eventService.getAllEventsByUser(id);
     }
 
     @PostMapping("")

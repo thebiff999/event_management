@@ -1,5 +1,6 @@
 package de.fhms.sweng.event_management.services;
 
+import de.fhms.sweng.event_management.dto.EventTO;
 import de.fhms.sweng.event_management.entities.Event;
 import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import de.fhms.sweng.event_management.repositories.EventRepository;
@@ -20,8 +21,17 @@ public class EventService {
         this.businessUserService = businessUserService;
     }
 
-    public Iterable<Event> getEvents() {
-        return eventRepository.findAll();
+    public Iterable<EventTO> getEvents() {
+
+        Iterable<Event> events = eventRepository.findAll();
+        Set<EventTO> eventTOs = new Set<EventTO>();
+
+        for (Event e:events) {
+            EventTO eventTO = new EventTO(e);
+            eventTOs.add(eventTO);
+        }
+        return eventTOs;
+
     }
 
     public Event getEventById(int id) {

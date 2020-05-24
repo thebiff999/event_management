@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Event {
 
     @Id @GeneratedValue
-    @Column (name="event_id")
+    @Column (name="id")
     private int id;
 
     @ManyToOne (fetch =  FetchType.LAZY)
@@ -21,7 +21,8 @@ public class Event {
     private Date datetime;
     private int radius;
 
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL)
+    @JoinColumn (name = "location_id", referencedColumnName = "id")
     private Location location;
 
     @ManyToMany

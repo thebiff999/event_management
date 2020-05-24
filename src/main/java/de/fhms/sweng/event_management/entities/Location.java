@@ -7,14 +7,13 @@ import javax.persistence.*;
 public class Location {
 
     @Id
-    @Column (name = "location_id")
+    @Column (name = "id")
     int id;
 
     private Double longitude;
     private Double latitude;
 
-    @OneToOne(mappedBy = "location", cascade = CascadeType.ALL)
-    @MapsId
+    @OneToOne(mappedBy = "location")
     private Event event;
 
     public Location (Event event, Double longitude, Double latitude) {

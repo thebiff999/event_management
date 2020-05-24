@@ -8,6 +8,7 @@ import java.util.Set;
 public class BusinessUser {
 
     @Id
+    @Column (name = "id")
     private int id;
 
     private String name;

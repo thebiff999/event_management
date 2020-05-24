@@ -1,5 +1,7 @@
 package de.fhms.sweng.event_management.entities;
 
+import de.fhms.sweng.event_management.dto.EventTO;
+
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.*;
@@ -53,6 +55,18 @@ public class Event {
         this.radius = radius;
         this.location = new Location(this,longitude,latitude);
 
+    }
+    //Constructor form EventTO and BusinessUser
+    public Event(BusinessUser businessUser, EventTO eventTO) {
+        this.id = eventTO.getId();
+        this.businessUserId = businessUser;
+        this.name = eventTO.getName();
+        if (eventTO.getDescription() != null) {
+            this.description = eventTO.getDescription();
+        }
+        this.datetime = eventTO.getDatetime();
+        this.radius = eventTO.getRadius();
+        this.location = new Location(this,eventTO.getLongitude(),eventTO.getLatitude());
     }
 
     //Getters and Setters

@@ -1,6 +1,7 @@
 package de.fhms.sweng.event_management.services;
 
 import de.fhms.sweng.event_management.dto.EventTO;
+import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.entities.Event;
 import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import de.fhms.sweng.event_management.repositories.EventRepository;
@@ -23,16 +24,35 @@ public class EventService {
         this.businessUserService = businessUserService;
     }
 
+    private Set<EventTO> convertToEventTO(Iterable<Event> eventSet) {
+
+        Set<EventTO> eventTOSet = new HashSet<EventTO>();
+
+        for (Event e:eventSet) {
+            EventTO eventTO = new EventTO(e);
+            eventTOSet.add(eventTO);
+        }
+
+        return eventTOSet;
+
+    }
+
+    private EventTO convertToEventTO(Event event) {
+        EventTO eventTO = new EventTO(event);
+        return eventTO;
+    }
+
+
+    public Event createEvent(EventTO eventTO) {
+        BusinessUser businessUser = businessUserService.getBusinessUser(eventTO.getBusinessUserId());
+        Event event = new Event(businessUser, eventTO);
+        return eventRepository.save(event);
+    }
+
     public Set<EventTO> getEvents() {
 
         Iterable<Event> events = eventRepository.findAll();
-        Set<EventTO> eventTOs = new HashSet<EventTO>();
-
-        for (Event e:events) {
-            EventTO eventTO = new EventTO(e);
-            eventTOs.add(eventTO);
-        }
-        return eventTOs;
+        return convertToEventTO(events);
 
     }
 
@@ -50,14 +70,7 @@ public class EventService {
 
         Set<Event> events = eventRepository.findByName(name);
         if (!(events.isEmpty())) {
-            Set<EventTO> eventTOs = new HashSet<EventTO>();
-
-            for (Event e:events) {
-                EventTO eventTO = new EventTO(e);
-                eventTOs.add(eventTO);
-            }
-
-            return eventTOs;
+            return convertToEventTO(events);
         }
         else throw new ResourceNotFoundException("Event not found");
     }
@@ -67,19 +80,18 @@ public class EventService {
 
         Set<Event> events = eventRepository.findAllByUserId(id);
         if (!(events.isEmpty())) {
-            Set<EventTO> eventTOs = new HashSet<EventTO>();
-
-            for (Event e:events) {
-                EventTO eventTO = new EventTO(e);
-                eventTOs.add(eventTO);
-            }
-
-            return eventTOs;
+            return convertToEventTO(events);
         }
         else throw new ResourceNotFoundException("Event not found");
     }
 
-
+    public Set<EventTO> getAllEventsByPreference(String preference) {
+        Set<Event> events = eventRepository.findallByPreference(preference);
+        if (!(events.isEmpty())) {
+            return convertToEventTO(events);
+        }
+        else throw new ResourceNotFoundException("Event not found");
+    }
 
 
 }

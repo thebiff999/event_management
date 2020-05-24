@@ -22,7 +22,12 @@ public class EventRestController {
     }
 
 
-    @GetMapping("byName")
+    @GetMapping("/all")
+    public Set<EventTO> getAllEvents() {
+        return eventService.getEvents();
+    }
+
+    @GetMapping("/byName")
     public Set<EventTO> getEventByName(@RequestParam(value="name")String name) {
         return eventService.getEventByName(name);
     }
@@ -40,6 +45,11 @@ public class EventRestController {
     @GetMapping("/byUser")
     public Set<EventTO> getEventByUser(@RequestParam(value="id")int id) {
         return eventService.getAllEventsByUser(id);
+    }
+
+    @GetMapping("/byPreference")
+    public Set<EventTO> getEventByPreference(@RequestParam(value="preference")String preference) {
+        return eventService.getAllEventsByPreference(preference);
     }
 
     @PostMapping("")

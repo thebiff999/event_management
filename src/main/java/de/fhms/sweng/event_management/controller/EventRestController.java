@@ -34,7 +34,7 @@ public class EventRestController {
 
     @GetMapping("/byId")
     public EventTO getEventById(@RequestParam(value="id")int id){
-        return eventService.getEventById(id);
+        return eventService.getEventTOById(id);
     }
 
     @GetMapping("/test")
@@ -54,13 +54,18 @@ public class EventRestController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createEvent(@RequestBody Event newEvent) {
-
+    public EventTO createEvent(@RequestBody EventTO newEvent) {
+        return eventService.createEvent(newEvent);
     }
 
     @DeleteMapping("/{id}")
     public void deleteEvent(@RequestParam(value="id")int id) {
+        eventService.deleteEvent(id);
+    }
 
+    @PutMapping("{id}")
+    public EventTO updateEvent(@PathVariable("id") int id, @RequestBody EventTO updatedEvent) {
+        return eventService.updateEvent(id,updatedEvent);
     }
 
 

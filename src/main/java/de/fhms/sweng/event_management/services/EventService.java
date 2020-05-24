@@ -3,6 +3,7 @@ package de.fhms.sweng.event_management.services;
 import de.fhms.sweng.event_management.dto.EventTO;
 import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.entities.Event;
+import de.fhms.sweng.event_management.exceptions.IdMismatchException;
 import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import de.fhms.sweng.event_management.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +44,37 @@ public class EventService {
     }
 
 
-    public Event createEvent(EventTO eventTO) {
+    public EventTO createEvent(EventTO eventTO) {
         BusinessUser businessUser = businessUserService.getBusinessUser(eventTO.getBusinessUserId());
         Event event = new Event(businessUser, eventTO);
-        return eventRepository.save(event);
+        return convertToEventTO(eventRepository.save(event));
+    }
+
+    public void deleteEvent(int id) {
+        eventRepository.deleteById(id);
+    }
+
+    public EventTO updateEvent(int id, EventTO eventTO) {
+
+        if (eventTO.getId() != id) {
+            throw new IdMismatchException();
+        }
+        else {
+            Event event = getEventById(id);
+            event.setName(eventTO.getName());
+            if (eventTO.getDescription() == null) {
+                event.setDescription("");
+            }
+            else {
+                event.setDescription(eventTO.getDescription());
+            }
+            event.setDatetime(eventTO.getDatetime());
+            event.setRadius(eventTO.getRadius());
+            event.setLongitude(eventTO.getLongitude());
+            event.setLatitude(eventTO.getLatitude());
+
+            return convertToEventTO(eventRepository.save(event));
+        }
     }
 
     public Set<EventTO> getEvents() {
@@ -56,7 +84,15 @@ public class EventService {
 
     }
 
-    public EventTO getEventById(int id) {
+    public Event getEventById(int id) {
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+        if (optionalEvent.isPresent()) {
+            return optionalEvent.get();
+        }
+        else throw new ResourceNotFoundException("Event not found");
+    }
+
+    public EventTO getEventTOById(int id) {
 
         EventTO eventTO;
         Optional<Event> optionalEvent = eventRepository.findById(id);

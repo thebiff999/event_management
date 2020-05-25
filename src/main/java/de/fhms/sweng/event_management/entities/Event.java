@@ -3,6 +3,7 @@ package de.fhms.sweng.event_management.entities;
 import de.fhms.sweng.event_management.dto.EventTO;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -35,7 +36,7 @@ public class Event {
     Set<Preference> preferences;
 
     //Contructor with description
-    public Event(BusinessUser businessUser, String name, String description, Date datetime, int radius, double longitude, double latitude) {
+    public Event(BusinessUser businessUser, String name, String description, Date datetime, int radius, double longitude, double latitude, Set<Preference> preferences) {
 
         this.businessUserId = businessUser;
         this.name = name;
@@ -43,21 +44,23 @@ public class Event {
         this.datetime = datetime;
         this.radius = radius;
         this.location = new Location(this, longitude,latitude);
+        this.preferences = preferences;
 
     }
 
     //Constructor without description
-    public Event(BusinessUser businessUser, String name, Date datetime, int radius, double longitude, double latitude) {
+    public Event(BusinessUser businessUser, String name, Date datetime, int radius, double longitude, double latitude, Set<Preference> preferences) {
 
         this.businessUserId = businessUser;
         this.name = name;
         this.datetime = datetime;
         this.radius = radius;
         this.location = new Location(this,longitude,latitude);
+        this.preferences = preferences;
 
     }
     //Constructor form EventTO and BusinessUser
-    public Event(BusinessUser businessUser, EventTO eventTO) {
+    public Event(BusinessUser businessUser, EventTO eventTO, Set<Preference> preferences) {
         this.id = eventTO.getId();
         this.businessUserId = businessUser;
         this.name = eventTO.getName();
@@ -67,6 +70,7 @@ public class Event {
         this.datetime = eventTO.getDatetime();
         this.radius = eventTO.getRadius();
         this.location = new Location(this,eventTO.getLongitude(),eventTO.getLatitude());
+        this.preferences = preferences;
     }
 
     //Getters and Setters
@@ -125,5 +129,9 @@ public class Event {
 
     public void setLatitude(double latitude) {
         location.setLatitude(latitude);
+    }
+
+    public Set<Preference> getPreferences() {
+        return this.preferences;
     }
 }

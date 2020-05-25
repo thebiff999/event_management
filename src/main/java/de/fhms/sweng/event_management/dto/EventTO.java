@@ -1,9 +1,12 @@
 package de.fhms.sweng.event_management.dto;
 
 import de.fhms.sweng.event_management.entities.Event;
+import de.fhms.sweng.event_management.entities.Preference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 public class EventTO {
 
@@ -12,12 +15,10 @@ public class EventTO {
     private String name;
     private String description;
     private Date datetime;
-
-
-
     private int radius;
     private double longitude;
     private double latitude;
+    private List<String> preferenceList;
 
     public EventTO (Event event) {
         this.id = event.getId();
@@ -30,6 +31,11 @@ public class EventTO {
         this.radius = event.getRadius();
         this.longitude = event.getLongitude();
         this.latitude = event.getLatitude();
+
+        for (Preference p:event.getPreferences()) {
+            this.preferenceList.add(p.getPreference());
+        }
+
     }
 
     public int getId() {
@@ -62,6 +68,10 @@ public class EventTO {
 
     public double getLatitude() {
         return latitude;
+    }
+
+    public List<String> getPreferenceList() {
+        return preferenceList;
     }
 
 }

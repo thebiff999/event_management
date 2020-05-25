@@ -18,36 +18,20 @@ public class EventService {
 
     private EventRepository eventRepository;
     private BusinessUserService businessUserService;
+    private MapperService mapperService;
 
     @Autowired
-    public EventService(EventRepository eventRepository, BusinessUserService businessUserService) {
+    public EventService(EventRepository eventRepository, BusinessUserService businessUserService, MapperService mapperService) {
         this.eventRepository = eventRepository;
         this.businessUserService = businessUserService;
+        this.mapperService = mapperService;
     }
 
-    private Set<EventTO> convertToEventTO(Iterable<Event> eventSet) {
-
-        Set<EventTO> eventTOSet = new HashSet<EventTO>();
-
-        for (Event e:eventSet) {
-            EventTO eventTO = new EventTO(e);
-            eventTOSet.add(eventTO);
-        }
-
-        return eventTOSet;
-
-    }
-
-    private EventTO convertToEventTO(Event event) {
-        EventTO eventTO = new EventTO(event);
-        return eventTO;
-    }
 
 
     public EventTO createEvent(EventTO eventTO) {
-        BusinessUser businessUser = businessUserService.getBusinessUser(eventTO.getBusinessUserId());
-        Event event = new Event(businessUser, eventTO);
-        return convertToEventTO(eventRepository.save(event));
+        Event event = mapperService.convertToEvent(eventTO);
+        return mapperService.convertToEventTO(eventRepository.save(event));
     }
 
     public void deleteEvent(int id) {
@@ -73,14 +57,14 @@ public class EventService {
             event.setLongitude(eventTO.getLongitude());
             event.setLatitude(eventTO.getLatitude());
 
-            return convertToEventTO(eventRepository.save(event));
+            return mapperService.convertToEventTO(eventRepository.save(event));
         }
     }
 
     public Set<EventTO> getEvents() {
 
         Iterable<Event> events = eventRepository.findAll();
-        return convertToEventTO(events);
+        return mapperService.convertToEventTO(events);
 
     }
 
@@ -106,7 +90,7 @@ public class EventService {
 
         Set<Event> events = eventRepository.findByName(name);
         if (!(events.isEmpty())) {
-            return convertToEventTO(events);
+            return mapperService.convertToEventTO(events);
         }
         else throw new ResourceNotFoundException("Event not found");
     }
@@ -116,7 +100,7 @@ public class EventService {
 
         Set<Event> events = eventRepository.findAllByUserId(id);
         if (!(events.isEmpty())) {
-            return convertToEventTO(events);
+            return mapperService.convertToEventTO(events);
         }
         else throw new ResourceNotFoundException("Event not found");
     }
@@ -124,7 +108,7 @@ public class EventService {
     public Set<EventTO> getAllEventsByPreference(String preference) {
         Set<Event> events = eventRepository.findallByPreference(preference);
         if (!(events.isEmpty())) {
-            return convertToEventTO(events);
+            return mapperService.convertToEventTO(events);
         }
         else throw new ResourceNotFoundException("Event not found");
     }

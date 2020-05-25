@@ -16,4 +16,16 @@ public class Preference {
     @ManyToMany(mappedBy = "preferences")
     Set<Event> events;
 
+    public Preference(String preference) {
+        this.preference = preference;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public String getPreference() {
+        return this.preference;
+    }
+
 }

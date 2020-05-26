@@ -4,11 +4,13 @@ import de.fhms.sweng.event_management.entities.Event;
 import de.fhms.sweng.event_management.entities.Preference;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-public class EventTO {
+public class EventTO implements Serializable {
 
     private int id;
     private int businessUserId;
@@ -20,6 +22,11 @@ public class EventTO {
     private double latitude;
     private List<String> preferenceList;
 
+
+    //Empty Constructor
+    public EventTO() {}
+
+    //Constructor from Event Entitiy
     public EventTO (Event event) {
         this.id = event.getId();
         this.businessUserId = event.getBusinessUserId();
@@ -31,9 +38,12 @@ public class EventTO {
         this.radius = event.getRadius();
         this.longitude = event.getLongitude();
         this.latitude = event.getLatitude();
+        this.preferenceList = new ArrayList<String>();
 
-        for (Preference p:event.getPreferences()) {
-            this.preferenceList.add(p.getPreference());
+        if (event.hasPreferences()) {
+            for (Preference p : event.getPreferences()) {
+                this.preferenceList.add(p.getPreference());
+            }
         }
 
     }

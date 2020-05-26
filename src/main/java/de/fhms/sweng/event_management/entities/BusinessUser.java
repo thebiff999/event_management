@@ -17,6 +17,9 @@ public class BusinessUser {
     private Set<Event> events = new HashSet<Event>();
 
 
+    //Empty Constructor
+    public BusinessUser() {}
+
     //Getters and Setters
     public int getId() {
         return id;

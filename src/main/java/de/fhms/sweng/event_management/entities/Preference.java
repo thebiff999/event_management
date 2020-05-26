@@ -16,6 +16,10 @@ public class Preference {
     @ManyToMany(mappedBy = "preferences")
     Set<Event> events;
 
+    //Empty Constructor
+    public Preference() {}
+
+    //Constructor
     public Preference(String preference) {
         this.preference = preference;
     }

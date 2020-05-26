@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table (name="Events")
 public class Event {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name="id")
     private int id;
 
@@ -34,6 +34,9 @@ public class Event {
             joinColumns = @JoinColumn(name="event_id"),
             inverseJoinColumns = @JoinColumn(name="preference_id"))
     Set<Preference> preferences;
+
+    //Standard-Constructor
+    public Event() {}
 
     //Contructor with description
     public Event(BusinessUser businessUser, String name, String description, Date datetime, int radius, double longitude, double latitude, Set<Preference> preferences) {
@@ -71,6 +74,11 @@ public class Event {
         this.radius = eventTO.getRadius();
         this.location = new Location(this,eventTO.getLongitude(),eventTO.getLatitude());
         this.preferences = preferences;
+    }
+
+    public boolean hasPreferences() {
+        if (this.preferences.isEmpty()) return false;
+        else return true;
     }
 
     //Getters and Setters

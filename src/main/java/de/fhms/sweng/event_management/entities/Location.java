@@ -24,6 +24,9 @@ public class Location {
 
     }
 
+    //Empty Constructor
+    public Location() {}
+
     //Getters and Setters
     public Double getLongitude() {
         return longitude;

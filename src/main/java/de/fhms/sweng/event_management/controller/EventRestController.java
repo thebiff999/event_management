@@ -59,11 +59,11 @@ public class EventRestController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEvent(@RequestParam(value="id")int id) {
+    public void deleteEvent(@PathVariable(value="id")int id) {
         eventService.deleteEvent(id);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public EventTO updateEvent(@PathVariable("id") int id, @RequestBody EventTO updatedEvent) {
         return eventService.updateEvent(id,updatedEvent);
     }

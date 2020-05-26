@@ -7,7 +7,7 @@ import java.util.Set;
 @Table(name="Preferences")
 public class Preference {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue( strategy = GenerationType.IDENTITY)
     @Column (name = "id")
     int id;
 

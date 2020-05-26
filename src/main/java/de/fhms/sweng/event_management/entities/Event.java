@@ -28,7 +28,7 @@ public class Event {
     @JoinColumn (name = "location_id", referencedColumnName = "id")
     private Location location;
 
-    @ManyToMany
+    @ManyToMany (cascade = CascadeType.ALL)
     @JoinTable(
             name="event_preferences",
             joinColumns = @JoinColumn(name="event_id"),
@@ -62,19 +62,6 @@ public class Event {
         this.preferences = preferences;
 
     }
-    //Constructor form EventTO and BusinessUser
-    public Event(BusinessUser businessUser, EventTO eventTO, Set<Preference> preferences) {
-        this.id = eventTO.getId();
-        this.businessUserId = businessUser;
-        this.name = eventTO.getName();
-        if (eventTO.getDescription() != null) {
-            this.description = eventTO.getDescription();
-        }
-        this.datetime = eventTO.getDatetime();
-        this.radius = eventTO.getRadius();
-        this.location = new Location(this,eventTO.getLongitude(),eventTO.getLatitude());
-        this.preferences = preferences;
-    }
 
     public boolean hasPreferences() {
         if (this.preferences.isEmpty()) return false;
@@ -87,9 +74,13 @@ public class Event {
         return id;
     }
 
+    public void setId(int id) { this.id = id;}
+
     public int getBusinessUserId() {
         return businessUserId.getId();
     }
+
+    public void setBusinessUserId(BusinessUser businessUser) {this.businessUserId = businessUser;}
 
     public String getName() {
         return name;
@@ -139,7 +130,13 @@ public class Event {
         location.setLatitude(latitude);
     }
 
+    public Location getLocation() { return this.location; }
+
+    public void setLocation(Location location) { this.location = location; }
+
     public Set<Preference> getPreferences() {
         return this.preferences;
     }
+
+    public void setPreferences(Set<Preference> preferences) { this.preferences = preferences; }
 }

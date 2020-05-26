@@ -3,6 +3,7 @@ package de.fhms.sweng.event_management.services;
 import de.fhms.sweng.event_management.dto.EventTO;
 import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.entities.Event;
+import de.fhms.sweng.event_management.entities.Location;
 import de.fhms.sweng.event_management.entities.Preference;
 import de.fhms.sweng.event_management.repositories.BusinessUserRepository;
 import de.fhms.sweng.event_management.repositories.EventRepository;
@@ -49,8 +50,10 @@ public class MapperService {
 
         //maybe add try catch block later
 
+        //map the business user
         BusinessUser businessUser = businessUserService.getBusinessUser(eventTO.getBusinessUserId());
 
+        //map the preferences
         List<String> preferenceList = eventTO.getPreferenceList();
         Set<Preference> preferences = new HashSet<Preference>();
         for (String name:preferenceList) {
@@ -65,7 +68,19 @@ public class MapperService {
 
         }
 
-        Event event = new Event(businessUser, eventTO, preferences);
+        //create new Event Object and map all attributes
+        Event event = new Event();
+        event.setId(eventTO.getId());
+        event.setBusinessUserId(businessUser);
+        event.setName(eventTO.getName());
+        if (eventTO.getDescription() != null) {
+            event.setDescription(eventTO.getDescription());
+        }
+        event.setDatetime(eventTO.getDatetime());
+        event.setRadius(eventTO.getRadius());
+        Location location = new Location(event,eventTO.getLongitude(),eventTO.getLatitude());
+        event.setLocation(location);
+        event.setPreferences(preferences);
         return event;
     }
 

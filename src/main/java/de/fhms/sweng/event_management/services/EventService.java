@@ -28,12 +28,13 @@ public class EventService {
     }
 
 
-
+    //TODO: add rabbit message for lennart
     public EventTO createEvent(EventTO eventTO) {
         Event event = mapperService.convertToEvent(eventTO);
         return mapperService.convertToEventTO(eventRepository.save(event));
     }
 
+    //TODO: add rabbit message for lennart
     public void deleteEvent(int id) {
         eventRepository.deleteById(id);
     }
@@ -44,20 +45,18 @@ public class EventService {
             throw new IdMismatchException();
         }
         else {
-            Event event = getEventById(id);
-            event.setName(eventTO.getName());
-            if (eventTO.getDescription() == null) {
-                event.setDescription("");
-            }
-            else {
-                event.setDescription(eventTO.getDescription());
-            }
-            event.setDatetime(eventTO.getDatetime());
-            event.setRadius(eventTO.getRadius());
-            event.setLongitude(eventTO.getLongitude());
-            event.setLatitude(eventTO.getLatitude());
+            Event updatedEvent = mapperService.convertToEvent(eventTO);
+            Optional<Event> optionalEvent = eventRepository.findById(id);
+            if (optionalEvent.isPresent()) {
+                Event oldEvent = optionalEvent.get();
+                //TODO: add rabbit messages for lennart
+                if (oldEvent.getPreferences() != updatedEvent.getPreferences()) {
+                    System.out.println("Send messages over AMQP");
+                }
 
-            return mapperService.convertToEventTO(eventRepository.save(event));
+                return mapperService.convertToEventTO(eventRepository.save(updatedEvent));
+            }
+            else { throw new ResourceNotFoundException("Event not found"); }
         }
     }
 

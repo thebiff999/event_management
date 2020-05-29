@@ -49,28 +49,21 @@ public class MapperService {
     public Event convertToEvent(EventTO eventTO) {
 
         //maybe add try catch block later
-
+        Event event = new Event();
         //map the business user
         BusinessUser businessUser = businessUserService.getBusinessUser(eventTO.getBusinessUserId());
 
         //map the preferences
-        List<String> preferenceList = eventTO.getPreferenceList();
-        Set<Preference> preferences = new HashSet<Preference>();
-        for (String name:preferenceList) {
-
-            if (preferenceService.getPrefernceByName(name).isPresent()) {
-                preferences.add(preferenceService.getPrefernceByName(name).get());
-            }
-            else {
-                Preference preference = new Preference(name);
-                preferences.add(preference);
-            }
-
+        if (eventTO.hasPreferences()) {
+            event.setPreferences(eventTO.getPreferences());
+            /*Set<Preference> preferences = new HashSet<Preference>();
+            for (Preference p:preferences) {
+                Preference preference = p;
+                preference.addEvent(event);
+                PreferenceService
+            }*/
         }
 
-        //create new Event Object and map all attributes
-        Event event = new Event();
-        event.setId(eventTO.getId());
         event.setBusinessUserId(businessUser);
         event.setName(eventTO.getName());
         if (eventTO.getDescription() != null) {
@@ -80,7 +73,7 @@ public class MapperService {
         event.setRadius(eventTO.getRadius());
         Location location = new Location(event,eventTO.getLongitude(),eventTO.getLatitude());
         event.setLocation(location);
-        event.setPreferences(preferences);
+        event.setPreferences(eventTO.getPreferences());
         return event;
     }
 

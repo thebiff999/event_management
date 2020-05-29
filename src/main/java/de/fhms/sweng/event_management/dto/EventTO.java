@@ -5,10 +5,8 @@ import de.fhms.sweng.event_management.entities.Preference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class EventTO implements Serializable {
 
@@ -16,11 +14,11 @@ public class EventTO implements Serializable {
     private int businessUserId;
     private String name;
     private String description;
-    private Date datetime;
+    private LocalDateTime datetime;
     private int radius;
     private double longitude;
     private double latitude;
-    private List<String> preferenceList;
+    private Set<Preference> preferences;
 
 
     //Empty Constructor
@@ -38,12 +36,10 @@ public class EventTO implements Serializable {
         this.radius = event.getRadius();
         this.longitude = event.getLongitude();
         this.latitude = event.getLatitude();
-        this.preferenceList = new ArrayList<String>();
+
 
         if (event.hasPreferences()) {
-            for (Preference p : event.getPreferences()) {
-                this.preferenceList.add(p.getPreference());
-            }
+            this.preferences = event.getPreferences();
         }
 
     }
@@ -64,7 +60,7 @@ public class EventTO implements Serializable {
         return description;
     }
 
-    public Date getDatetime() {
+    public LocalDateTime getDatetime() {
         return datetime;
     }
 
@@ -80,8 +76,23 @@ public class EventTO implements Serializable {
         return latitude;
     }
 
-    public List<String> getPreferenceList() {
-        return preferenceList;
+    public Set<Preference> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(HashSet<Preference> preferences) {
+        this.preferences = preferences;
+    }
+
+    public boolean hasPreferences() {
+        if (this.preferences == null) { return false; }
+        if (this.preferences.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+
+
     }
 
 }

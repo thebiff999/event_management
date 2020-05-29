@@ -2,6 +2,7 @@ package de.fhms.sweng.event_management.entities;
 
 import de.fhms.sweng.event_management.dto.EventTO;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,20 +16,20 @@ public class Event {
     @Column (name="id")
     private int id;
 
-    @ManyToOne (fetch =  FetchType.LAZY)
+    @ManyToOne
     @JoinColumn
     private BusinessUser businessUserId;
 
     private String name;
     private String description;
-    private Date datetime;
+    private LocalDateTime datetime;
     private int radius;
 
     @OneToOne (cascade = CascadeType.ALL)
     @JoinColumn (name = "location_id", referencedColumnName = "id")
     private Location location;
 
-    @ManyToMany (cascade = CascadeType.ALL)
+    @ManyToMany (cascade = CascadeType.MERGE)
     @JoinTable(
             name="event_preferences",
             joinColumns = @JoinColumn(name="event_id"),
@@ -36,10 +37,12 @@ public class Event {
     Set<Preference> preferences;
 
     //Standard-Constructor
-    public Event() {}
+    public Event() {
+        preferences = new HashSet<Preference>();
+    }
 
     //Contructor with description
-    public Event(BusinessUser businessUser, String name, String description, Date datetime, int radius, double longitude, double latitude, Set<Preference> preferences) {
+    public Event(BusinessUser businessUser, String name, String description, LocalDateTime datetime, int radius, double longitude, double latitude, Set<Preference> preferences) {
 
         this.businessUserId = businessUser;
         this.name = name;
@@ -52,7 +55,7 @@ public class Event {
     }
 
     //Constructor without description
-    public Event(BusinessUser businessUser, String name, Date datetime, int radius, double longitude, double latitude, Set<Preference> preferences) {
+    public Event(BusinessUser businessUser, String name, LocalDateTime datetime, int radius, double longitude, double latitude, Set<Preference> preferences) {
 
         this.businessUserId = businessUser;
         this.name = name;
@@ -64,6 +67,7 @@ public class Event {
     }
 
     public boolean hasPreferences() {
+        if (this.preferences == null) { return false; }
         if (this.preferences.isEmpty()) return false;
         else return true;
     }
@@ -98,11 +102,9 @@ public class Event {
         this.description = description;
     }
 
-    public Date getDatetime() {
-        return datetime;
-    }
+    public LocalDateTime getDatetime() { return datetime; }
 
-    public void setDatetime(Date datetime) {
+    public void setDatetime(LocalDateTime datetime) {
         this.datetime = datetime;
     }
 
@@ -138,5 +140,8 @@ public class Event {
         return this.preferences;
     }
 
-    public void setPreferences(Set<Preference> preferences) { this.preferences = preferences; }
+    public void setPreferences(Set<Preference> preferences) {
+        this.preferences = preferences;
+        }
+
 }

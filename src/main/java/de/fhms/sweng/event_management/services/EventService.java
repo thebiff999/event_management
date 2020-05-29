@@ -3,12 +3,15 @@ package de.fhms.sweng.event_management.services;
 import de.fhms.sweng.event_management.dto.EventTO;
 import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.entities.Event;
+import de.fhms.sweng.event_management.entities.Preference;
 import de.fhms.sweng.event_management.exceptions.IdMismatchException;
 import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import de.fhms.sweng.event_management.repositories.EventRepository;
+import de.fhms.sweng.event_management.producer.EventProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -18,46 +21,60 @@ public class EventService {
 
     private EventRepository eventRepository;
     private BusinessUserService businessUserService;
+    private PreferenceService preferenceService;
     private MapperService mapperService;
+    private EventProducer eventProducer;
 
     @Autowired
-    public EventService(EventRepository eventRepository, BusinessUserService businessUserService, MapperService mapperService) {
+    public EventService(EventRepository eventRepository, BusinessUserService businessUserService, PreferenceService preferenceService, MapperService mapperService, EventProducer eventProducer) {
         this.eventRepository = eventRepository;
         this.businessUserService = businessUserService;
+        this.preferenceService = preferenceService;
         this.mapperService = mapperService;
+        this.eventProducer = eventProducer;
     }
 
 
-    //TODO: add rabbit message for lennart
+    @Transactional
     public EventTO createEvent(EventTO eventTO) {
-        Event event = mapperService.convertToEvent(eventTO);
-        return mapperService.convertToEventTO(eventRepository.save(event));
+        Event event = new Event();
+        event = mapperService.convertToEvent(eventTO);
+        preferenceService.createPreferencesFromEvent(event);
+        event = eventRepository.save(event);
+        EventTO newEventTO = mapperService.convertToEventTO(event);
+        eventProducer.sendNewEvent(newEventTO);
+        return newEventTO;
     }
 
-    //TODO: add rabbit message for lennart
+
     public void deleteEvent(int id) {
-        eventRepository.deleteById(id);
+
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+        if (optionalEvent.isPresent()) {
+            EventTO eventTO = mapperService.convertToEventTO(optionalEvent.get());
+            eventRepository.deleteById(id);
+            eventProducer.sendDeletedEvent(eventTO);
+        }
+        else {throw new ResourceNotFoundException("Event has not been found"); }
+
     }
 
     public EventTO updateEvent(int id, EventTO eventTO) {
 
-        if (eventTO.getId() != id) {
-            throw new IdMismatchException();
-        }
-        else {
             Event updatedEvent = mapperService.convertToEvent(eventTO);
             Optional<Event> optionalEvent = eventRepository.findById(id);
             if (optionalEvent.isPresent()) {
                 Event oldEvent = optionalEvent.get();
-                //TODO: add rabbit messages for lennart
+                updatedEvent.setId(id);
                 if (oldEvent.getPreferences() != updatedEvent.getPreferences()) {
-                    System.out.println("Send messages over AMQP");
+                    preferenceService.createPreferencesFromEvent(updatedEvent);
+                    eventProducer.sendNewEvent(eventTO);
                 }
 
                 return mapperService.convertToEventTO(eventRepository.save(updatedEvent));
             }
             else { throw new ResourceNotFoundException("Event not found"); }
-        }
+
     }
 
     public Set<EventTO> getEvents() {

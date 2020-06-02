@@ -30,4 +30,10 @@ public class BusinessUserService {
 
     }
 
+    public void createBusinessUser(BusinessUser businessUser) {
+
+        businessUserRepository.save(businessUser);
+
+    }
+
 }

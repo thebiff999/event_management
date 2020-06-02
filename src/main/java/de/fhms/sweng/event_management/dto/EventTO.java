@@ -1,5 +1,9 @@
 package de.fhms.sweng.event_management.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import de.fhms.sweng.event_management.entities.Event;
 import de.fhms.sweng.event_management.entities.Preference;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,6 +18,8 @@ public class EventTO implements Serializable {
     private int businessUserId;
     private String name;
     private String description;
+    @JsonSerialize (using = LocalDateTimeSerializer.class)
+    @JsonDeserialize (using = LocalDateTimeDeserializer.class)
     private LocalDateTime datetime;
     private int radius;
     private double longitude;

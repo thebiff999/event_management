@@ -17,6 +17,8 @@ public class BusinessUser {
     @Column (name = "last_name")
     private String lastName;
 
+    private String mail;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "businessUserId")
     private Set<Event> events = new HashSet<Event>();
 
@@ -42,5 +44,9 @@ public class BusinessUser {
     }
 
     public void setLastName(String name) { this.lastName = name; }
+
+    public String getMail() { return mail; }
+
+    public void setMail(String mail) { this.mail = mail;}
 
 }

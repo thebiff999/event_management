@@ -1,5 +1,6 @@
 package de.fhms.sweng.event_management.services;
 
+import de.fhms.sweng.event_management.dto.BusinessUserTO;
 import de.fhms.sweng.event_management.dto.EventTO;
 import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.entities.Event;
@@ -75,6 +76,17 @@ public class MapperService {
         event.setLocation(location);
         event.setPreferences(eventTO.getPreferences());
         return event;
+    }
+
+    public BusinessUser convertToUser(BusinessUserTO businessUserTO) {
+
+        BusinessUser businessUser = new BusinessUser();
+        businessUser.setId(businessUserTO.getId());
+        businessUser.setFirstName(businessUserTO.getFirstName());
+        businessUser.setLastName(businessUserTO.getLastName());
+        businessUser.setMail(businessUserTO.getEmail());
+        return businessUser;
+
     }
 
 }

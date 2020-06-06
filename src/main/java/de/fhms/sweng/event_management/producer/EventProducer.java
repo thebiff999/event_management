@@ -35,7 +35,7 @@ public class EventProducer {
 
     public void sendDeletedEvent(EventTO event) {
         amqpTemplate.convertAndSend(exchange, deletedEventKey, event);
-        LOGGER.info("Message sent with conten: {}", event);
+        LOGGER.info("Message sent with content: {}", event);
     }
 
 

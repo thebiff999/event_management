@@ -3,6 +3,8 @@ package de.fhms.sweng.event_management.services;
 import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import de.fhms.sweng.event_management.repositories.BusinessUserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.Set;
 public class BusinessUserService {
 
     private BusinessUserRepository businessUserRepository;
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
     BusinessUserService(BusinessUserRepository businessUserRepository) {
@@ -24,16 +27,20 @@ public class BusinessUserService {
 
         Optional<BusinessUser> optionalBusinessUser = businessUserRepository.findById(id);
         if (optionalBusinessUser.isPresent()) {
+            LOGGER.trace("returning BusinessUser with id {}", id);
             return optionalBusinessUser.get();
         }
-        else throw new ResourceNotFoundException("Business User not found");
+        else {
+            LOGGER.error("Business User with id {} could not be found", id);
+            throw new ResourceNotFoundException("Business User not found");
+        }
 
     }
 
     public void createBusinessUser(BusinessUser businessUser) {
 
         businessUserRepository.save(businessUser);
-
+        LOGGER.info("Business User with id {} created", businessUser.getId());
     }
 
 }

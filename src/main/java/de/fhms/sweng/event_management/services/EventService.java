@@ -40,18 +40,38 @@ public class EventService {
 
     @Transactional
     public EventTO createEvent(EventTO eventTO) {
-        LOGGER.trace("creating new event");
+        LOGGER.info("start of createEvent");
+        LOGGER.trace(" create new event entity");
         Event event = new Event();
-        LOGGER.info("new event with id {} created", event.getId());
-        event = mapperService.convertToEvent(eventTO);
-        preferenceService.createPreferencesFromEvent(event);
+        LOGGER.trace(" mapping simple data types");
+        //map simple data types
+        event.setName(eventTO.getName());
+        if (eventTO.hasDescription()) { event.setDescription(eventTO.getDescription());}
+        event.setDatetime(eventTO.getDatetime());
+        event.setRadius(eventTO.getRadius());
+        event.setLongitude(eventTO.getLongitude());
+        event.setLatitude(eventTO.getLatitude());
+        //map business user
+        LOGGER.trace(" mapping Business User {}", eventTO.getBusinessUserId());
+        BusinessUser businessUser = businessUserService.getBusinessUser(eventTO.getBusinessUserId());
+        event.setBusinessUserId(businessUser);
+        //map preferences
+        LOGGER.trace(" mapping preferences");
+        LOGGER.trace("  create prefrences from eventTO");
+        preferenceService.createPreferencesFromEvent(eventTO);
+        for (Preference p : eventTO.getPreferences()) {
+            Preference preference = preferenceService.getPrefernceByValue(p.getValue()).get();
+            LOGGER.trace("  mapping preference {}-{}", preference.getId(), preference.getValue());
+            event.addPreference(preference);
+        }
         event = eventRepository.save(event);
+        LOGGER.info("new event with id {} successfully created", event.getId());
         EventTO newEventTO = mapperService.convertToEventTO(event);
         eventProducer.sendNewEvent(newEventTO);
         return newEventTO;
     }
 
-
+    @Transactional
     public void deleteEvent(int id) {
         LOGGER.info("deleting event wit id {}", id);
         Optional<Event> optionalEvent = eventRepository.findById(id);
@@ -67,25 +87,48 @@ public class EventService {
 
     }
 
+    @Transactional
     public EventTO updateEvent(int id, EventTO eventTO) {
 
-            LOGGER.info("updating event with id {}", id);
-            Event updatedEvent = mapperService.convertToEvent(eventTO);
-            Optional<Event> optionalEvent = eventRepository.findById(id);
-            if (optionalEvent.isPresent()) {
-                Event oldEvent = optionalEvent.get();
-                updatedEvent.setId(id);
-                if (oldEvent.getPreferences() != updatedEvent.getPreferences()) {
-                    preferenceService.createPreferencesFromEvent(updatedEvent);
-                    eventProducer.sendNewEvent(eventTO);
-                }
-
-                return mapperService.convertToEventTO(eventRepository.save(updatedEvent));
+            LOGGER.info("starting update of event with id {}", id);
+            LOGGER.trace("fetching event by id");
+            Event event = getEventById(id);
+            //Check if there are any updates to the event
+            if (mapperService.convertToEventTO(event).equals(eventTO)) {
+                LOGGER.info("there are no changes to the event");
+                return eventTO;
+            }
+            LOGGER.trace(" mapping simple data types");
+            event.setName(eventTO.getName());
+            if (eventTO.hasDescription()) {
+                event.setDescription(eventTO.getDescription());
             }
             else {
-                LOGGER.error("event with id {} has not been found", id);
-                throw new ResourceNotFoundException("Event not found");
+                event.setDescription(null);
             }
+            event.setDatetime(eventTO.getDatetime());
+            if (!(event.getLongitude() == eventTO.getLongitude() && event.getLatitude() == eventTO.getLatitude())) {
+                event.setLongitude(eventTO.getLongitude());
+                event.setLatitude(eventTO.getLatitude());
+            }
+            //map preferences
+            LOGGER.trace(" mapping preferences");
+            if (!(mapperService.convertToEventTO(event).getPreferences() == eventTO.getPreferences())) {
+                LOGGER.trace("  create prefrences from eventTO");
+                preferenceService.createPreferencesFromEvent(eventTO);
+                for (Preference p : eventTO.getPreferences()) {
+                    Preference preference = preferenceService.getPrefernceByValue(p.getValue()).get();
+                    LOGGER.trace("  mapping preference {}-{}", preference.getId(), preference.getValue());
+                    event.addPreference(preference);
+                }
+
+            }
+            event = eventRepository.save(event);
+            LOGGER.info("event with id {} successfully updated", event.getId());
+            EventTO updatedEventTO = mapperService.convertToEventTO(event);
+            eventProducer.sendNewEvent(updatedEventTO);
+            return updatedEventTO;
+
 
     }
 

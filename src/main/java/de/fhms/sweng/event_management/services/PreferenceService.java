@@ -24,18 +24,25 @@ public class PreferenceService {
         this.preferenceRepository = preferenceRepository;
     }
 
-    public Optional<Preference> getPrefernceByName(String name) {
-        LOGGER.info("Returning preference by name {}", name);
-        return preferenceRepository.findByName(name);
+    public Optional<Preference> getPrefernceByValue(String value) {
+        return preferenceRepository.findByValue(value);
     }
 
-    public void createPreferencesFromEvent(Event event) {
-        LOGGER.info("creating preferences from event with id {}", event.getId());
+    public void createPreferencesFromEvent(EventTO event) {
+        LOGGER.info("creating preferences from event");
         if (event.hasPreferences()) {
             for (Preference p : event.getPreferences()) {
-                p.addEvent(event);
-                LOGGER.trace("adding preference '{}'", p.getValue());
-                preferenceRepository.save(p);
+                if (getPrefernceByValue(p.getValue()).isPresent()) {
+                    Preference preference = getPrefernceByValue(p.getValue()).get();
+                    LOGGER.trace("Preference with value {} already exists with id {}", preference.getValue(), preference.getId());
+                }
+                else {
+                    LOGGER.trace("Preference with value {} doesn't exit yet, creating new one", p.getValue());
+                    Preference newPreference = new Preference();
+                    newPreference.setValue(p.getValue());
+                    preferenceRepository.save(newPreference);
+                    LOGGER.trace("created preference '{}-{}'", newPreference.getId(), newPreference.getValue());
+                }
             }
         }
     }

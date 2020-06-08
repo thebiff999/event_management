@@ -12,9 +12,21 @@ public class BusinessUserTO implements Serializable {
     private String lastName;
     private String email;
 
+    //Empty constructor
     public BusinessUserTO() {
     }
 
+    //Override methods
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "\n"
+                + "id: " + id + "\n"
+                + "firstName: " + firstName + "\n"
+                + "lastName: " + lastName + "\n"
+                + "email: " + email + "\n";
+    }
+
+    //Getters and Setters
     public Integer getId() {
         return id;
     }

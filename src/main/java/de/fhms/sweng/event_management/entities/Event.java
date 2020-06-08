@@ -39,6 +39,7 @@ public class Event {
     //Standard-Constructor
     public Event() {
         preferences = new HashSet<Preference>();
+        location = new Location();
     }
 
     //Contructor with description
@@ -70,6 +71,24 @@ public class Event {
         if (this.preferences == null) { return false; }
         if (this.preferences.isEmpty()) return false;
         else return true;
+    }
+
+    //Override methods
+    @Override
+    public String toString() {
+        return "\n" + getClass().getSimpleName() + "\n"
+                + "id: " + id + "\n"
+                + "name: " + name + "\n" +
+                "businessUserId: " + businessUserId.getId() + "\n" +
+                "description" + description + "\n" +
+                "datetime: " + datetime + "\n" +
+                "longitude :" + location.getLongitude() + "\n" +
+                "latitude: " + location.getLatitude();
+    }
+
+    //other methods
+    public void addPreference(Preference preference) {
+        preferences.add(preference);
     }
 
     //Getters and Setters

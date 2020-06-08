@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface PreferenceRepository extends CrudRepository<Preference, Integer> {
 
     @Query(value="select p from Preference p where p.value = ?1")
-    Optional<Preference> findByName(String name);
+    Optional<Preference> findByValue(String value);
 
 
 }

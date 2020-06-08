@@ -50,6 +50,29 @@ public class EventTO implements Serializable {
 
     }
 
+    //Override methods
+    @Override
+    public String toString() {
+        return "\n" + getClass().getSimpleName() + "\n"
+                + "id: " + id + "\n"
+                + "name: " + name + "\n"
+                + "businessUserId: " + businessUserId+ "\n"
+                + "description" + description + "\n"
+                + "datetime: " + datetime + "\n"
+                + "longitude :" + longitude + "\n"
+                + "latitude: " + latitude;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof EventTO)) return false;
+        EventTO e = (EventTO )o;
+        if (this.id == e.getId() && this.name == e.getName() && this.businessUserId == e.getBusinessUserId() && this.description == e.getDescription() && this.datetime == e.getDatetime() && this.longitude == e.longitude && this.latitude == e.latitude) return true;
+        else return false;
+    }
+
+    //Getters and Setters
     public int getId() {
         return id;
     }
@@ -90,6 +113,8 @@ public class EventTO implements Serializable {
         this.preferences = preferences;
     }
 
+
+    //boolean methods
     public boolean hasPreferences() {
         if (this.preferences == null) { return false; }
         if (this.preferences.isEmpty()) {
@@ -97,8 +122,11 @@ public class EventTO implements Serializable {
         } else {
             return true;
         }
+    }
 
-
+    public boolean hasDescription() {
+        if (this.description == null) { return false; }
+        else { return true; }
     }
 
 }

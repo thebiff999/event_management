@@ -22,6 +22,7 @@ public class MapperService {
 
     private BusinessUserService businessUserService;
     private PreferenceService preferenceService;
+    private EventRepository eventRepository;
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -46,45 +47,16 @@ public class MapperService {
 
     //Convert Event Entitiy to Data Transfer Object
     public EventTO convertToEventTO(Event event) {
+
         LOGGER.info("converting Event into EventTO");
-        LOGGER.debug("id of event is {}", event.getId());
+        LOGGER.debug("Values of Event:");
+        LOGGER.debug("{}", event.toString());
         EventTO eventTO = new EventTO(event);
+        LOGGER.debug("Values of mapped EventTO:");
+        LOGGER.debug("{}", eventTO.toString());
         return eventTO;
     }
 
-    //Convert Data Transfer Object back to Event Entity
-    public Event convertToEvent(EventTO eventTO) {
-        LOGGER.info("convert eventTO with Id {} to event", eventTO.getId());
-        LOGGER.trace("creating Event and BusinessUser Entities");
-        //maybe add try catch block later
-        Event event = new Event();
-        //map the business user
-        BusinessUser businessUser = businessUserService.getBusinessUser(eventTO.getBusinessUserId());
-
-        //map the preferences
-        LOGGER.trace("mapping preferences");
-        if (eventTO.hasPreferences()) {
-            event.setPreferences(eventTO.getPreferences());
-            /*Set<Preference> preferences = new HashSet<Preference>();
-            for (Preference p:preferences) {
-                Preference preference = p;
-                preference.addEvent(event);
-                PreferenceService
-            }*/
-        }
-        LOGGER.trace("mapping other properties");
-        event.setBusinessUserId(businessUser);
-        event.setName(eventTO.getName());
-        if (eventTO.getDescription() != null) {
-            event.setDescription(eventTO.getDescription());
-        }
-        event.setDatetime(eventTO.getDatetime());
-        event.setRadius(eventTO.getRadius());
-        Location location = new Location(event,eventTO.getLongitude(),eventTO.getLatitude());
-        event.setLocation(location);
-        event.setPreferences(eventTO.getPreferences());
-        return event;
-    }
 
     public BusinessUser convertToUser(BusinessUserTO businessUserTO) {
 

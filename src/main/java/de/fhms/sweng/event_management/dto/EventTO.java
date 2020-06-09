@@ -72,6 +72,11 @@ public class EventTO implements Serializable {
         else return false;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, businessUserId, name, longitude, latitude);
+    }
+
     //Getters and Setters
     public int getId() {
         return id;

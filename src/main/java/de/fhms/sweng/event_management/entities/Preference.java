@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @JsonIgnoreProperties (ignoreUnknown = true)
@@ -31,6 +32,12 @@ public class Preference {
     //Constructor
     public Preference(String value) {
         this.value = value;
+    }
+
+    //Override methods
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, value);
     }
 
     public int getId() {

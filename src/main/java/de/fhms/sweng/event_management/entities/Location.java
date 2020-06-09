@@ -1,6 +1,7 @@
 package de.fhms.sweng.event_management.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table (name="Locations")
@@ -26,6 +27,12 @@ public class Location {
 
     //Empty Constructor
     public Location() {}
+
+    //Override methods
+    @Override
+    public int hashCode() {
+        return Objects.hash(longitude, latitude);
+    }
 
     //Getters and Setters
     public Double getLongitude() {

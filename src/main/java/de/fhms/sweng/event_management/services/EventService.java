@@ -4,7 +4,6 @@ import de.fhms.sweng.event_management.dto.EventTO;
 import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.entities.Event;
 import de.fhms.sweng.event_management.entities.Preference;
-import de.fhms.sweng.event_management.exceptions.IdMismatchException;
 import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import de.fhms.sweng.event_management.repositories.EventRepository;
 import de.fhms.sweng.event_management.producer.EventProducer;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 

@@ -5,6 +5,7 @@ import de.fhms.sweng.event_management.dto.EventTO;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -84,6 +85,11 @@ public class Event {
                 "datetime: " + datetime + "\n" +
                 "longitude :" + location.getLongitude() + "\n" +
                 "latitude: " + location.getLatitude();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, businessUserId, name);
     }
 
     //other methods

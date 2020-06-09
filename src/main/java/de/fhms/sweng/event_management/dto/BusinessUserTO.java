@@ -3,6 +3,7 @@ package de.fhms.sweng.event_management.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import de.fhms.sweng.event_management.entities.Preference;
 import java.io.Serializable;
+import java.util.Objects;
 
 @JsonIgnoreProperties (ignoreUnknown = true)
 public class BusinessUserTO implements Serializable {
@@ -24,6 +25,11 @@ public class BusinessUserTO implements Serializable {
                 + "firstName: " + firstName + "\n"
                 + "lastName: " + lastName + "\n"
                 + "email: " + email + "\n";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName);
     }
 
     //Getters and Setters

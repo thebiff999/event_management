@@ -1,6 +1,7 @@
 package de.fhms.sweng.event_management.entities;
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -19,12 +20,22 @@ public class BusinessUser {
 
     private String mail;
 
+    private String role;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "businessUserId")
     private Set<Event> events = new HashSet<Event>();
 
 
     //Empty Constructor
-    public BusinessUser() {}
+    public BusinessUser() {
+        this.role = "EUSER";
+    }
+
+    //Override methods
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName);
+    }
 
     //Getters and Setters
     public int getId() {
@@ -48,5 +59,7 @@ public class BusinessUser {
     public String getMail() { return mail; }
 
     public void setMail(String mail) { this.mail = mail;}
+
+    public String getRole() { return this.role; }
 
 }

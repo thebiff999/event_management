@@ -45,7 +45,7 @@ public class EventRestController {
     @GetMapping("/test")
     public String getTest() {
         LOGGER.info("GET-Resquest on /test recieved");
-        return "test successful";
+        return "Event Microservice is available";
     }
 
     @GetMapping("/byUser")

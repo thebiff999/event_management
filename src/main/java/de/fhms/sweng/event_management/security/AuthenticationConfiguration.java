@@ -21,8 +21,9 @@ public class AuthenticationConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/rest/users/login").permitAll()
-                .antMatchers("/rest/users/register").permitAll()
+                .antMatchers("/event/test").permitAll()
+                .antMatchers("/event/actuator/").permitAll()
+                .antMatchers("/event/actuator/**").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable();
         http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider)); //JWT

@@ -30,21 +30,25 @@ class BusinessUserTOTest {
     }
 
     @Test
-    void testHashCode() {
+    void testHashCodeTrue() {
         BusinessUserTO user2 = new BusinessUserTO();
-        BusinessUserTO user3 = new BusinessUserTO();
-
         user2.setId(1);
         user2.setFirstName("first");
         user2.setLastName("last");
         user2.setEmail("first@last.de");
 
+        assertEquals(user.hashCode(), user2.hashCode());
+
+    }
+
+    @Test
+    void testHashCodeFalse() {
+        BusinessUserTO user3 = new BusinessUserTO();
         user3.setId(2);
         user3.setFirstName("first");
         user3.setLastName("last");
         user3.setEmail("first@last.de");
 
-        assertEquals(user.hashCode(), user2.hashCode());
         assertNotEquals(user.hashCode(), user3.hashCode());
     }
 

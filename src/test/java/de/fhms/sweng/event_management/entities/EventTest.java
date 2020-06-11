@@ -1,0 +1,242 @@
+package de.fhms.sweng.event_management.entities;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class EventTest {
+
+    private Event event;
+    private BusinessUser user;
+    private String datetime;
+    private Preference preference;
+    private HashSet<Preference> preferenceSet;
+    private LocalDateTime time;
+    private Location location;
+
+    @BeforeEach
+    void setUp() {
+
+        user = new BusinessUser();
+        user.setId(1);
+        user.setFirstName("first");
+        user.setLastName("last");
+        user.setMail("first@last.de");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        datetime = "2020-06-06 20:00";
+        time = LocalDateTime.parse(datetime, formatter);
+
+        preference = new Preference();
+        preference.setId(1);
+        preference.setValue("Music");
+        preferenceSet = new HashSet<Preference>();
+        preferenceSet.add(preference);
+
+        location = new Location();
+        location.setLongitude(60.00);
+        location.setLatitude(60.00);
+
+        event = new Event();
+        event.setId(1);
+        event.setBusinessUserId(user);
+        event.setDescription("description");
+        event.setName("event");
+        event.setLocation(location);
+        event.setRadius(5);
+        event.setDatetime(time);
+        event.setPreferences(preferenceSet);
+    }
+
+    @AfterEach
+    void tearDown() {
+    }
+
+    @Test
+    void hasPreferencesTrue() {
+        assertTrue(event.hasPreferences());
+    }
+
+    @Test
+    void hasPreferencesFalse() {
+        event.setPreferences(null);
+        assertFalse(event.hasPreferences());
+    }
+
+    @Test
+    void testToString() {
+    }
+
+    @Test
+    void testHashCodeTrue() {
+        Event event2 = new Event();
+        event2.setId(1);
+        event2.setBusinessUserId(user);
+        event2.setDescription("description");
+        event2.setName("event");
+        event2.setLocation(location);
+        event2.setRadius(5);
+        event2.setDatetime(time);
+        event2.setPreferences(preferenceSet);
+
+        assertEquals(event.hashCode(), event2.hashCode());
+    }
+
+    @Test
+    void testHashCodeFalse() {
+        Event event2 = new Event();
+        event2.setId(2);
+        event2.setBusinessUserId(user);
+        event2.setDescription("description2");
+        event2.setName("event2");
+        event2.setLocation(location);
+        event2.setRadius(5);
+        event2.setDatetime(time);
+        event2.setPreferences(preferenceSet);
+
+        assertNotEquals(event.hashCode(), event2.hashCode());
+    }
+
+    @Test
+    void addPreference() {
+        Preference p = new Preference();
+        p.setId(2);
+        p.setValue("Cars");
+        event.addPreference(p);
+        preferenceSet.add(p);
+        assertEquals(preferenceSet, event.getPreferences());
+    }
+
+    @Test
+    void getId() {
+        assertEquals(1, event.getId());
+    }
+
+    @Test
+    void setId() {
+        event.setId(2);
+        assertEquals(2, event.getId());
+    }
+
+    @Test
+    void getBusinessUserId() {
+        assertEquals(1, event.getBusinessUserId());
+    }
+
+    @Test
+    void setBusinessUserId() {
+        BusinessUser user2 = new BusinessUser();
+        user2.setFirstName("first2");
+        user2.setLastName("last2");
+        user2.setMail("first2@last2.de");
+        user2.setId(2);
+
+        event.setBusinessUserId(user2);
+        assertEquals(2, event.getBusinessUserId());
+    }
+
+    @Test
+    void getName() {
+        assertEquals("event", event.getName());
+    }
+
+    @Test
+    void setName() {
+        event.setName("different");
+        assertEquals("different", event.getName());
+    }
+
+    @Test
+    void getDescription() {
+        assertEquals("description", event.getDescription());
+    }
+
+    @Test
+    void setDescription() {
+        event.setDescription("different");
+        assertEquals("different", event.getDescription());
+    }
+
+    @Test
+    void getDatetime() {
+        assertEquals(time, event.getDatetime());
+    }
+
+    @Test
+    void setDatetime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        datetime = "2020-06-06 20:00";
+        time = LocalDateTime.parse(datetime, formatter);
+
+        event.setDatetime(time);
+        assertEquals(time, event.getDatetime());
+    }
+
+    @Test
+    void getRadius() {
+        assertEquals(5, event.getRadius());
+    }
+
+    @Test
+    void setRadius() {
+        event.setRadius(6);
+        assertEquals(6, event.getRadius());
+    }
+
+    @Test
+    void getLongitude() {
+        assertEquals(60.00, event.getLongitude());
+    }
+
+    @Test
+    void setLongitude() {
+        event.setLongitude(70.00);
+        assertEquals(70.00, event.getLongitude());
+    }
+
+    @Test
+    void getLatitude() {
+        assertEquals(60.00, event.getLatitude());
+    }
+
+    @Test
+    void setLatitude() {
+        event.setLatitude(80.00);
+        assertEquals(80.00, event.getLatitude());
+    }
+
+    @Test
+    void getLocation() {
+        assertEquals(location, event.getLocation());
+    }
+
+    @Test
+    void setLocation() {
+        Location l = new Location();
+        l.setLongitude(10.00);
+        l.setLatitude(20.00);
+        event.setLocation(l);
+        assertEquals(l, event.getLocation());
+    }
+
+    @Test
+    void getPreferences() {
+        assertEquals(preferenceSet, event.getPreferences());
+    }
+
+    @Test
+    void setPreferences() {
+        Preference p = new Preference();
+        p.setId(3);
+        p.setValue("Misc");
+        preferenceSet.add(p);
+        event.setPreferences(preferenceSet);
+        assertEquals(preferenceSet, event.getPreferences());
+    }
+}

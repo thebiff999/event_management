@@ -35,14 +35,39 @@ class EventTOTest {
 
     @Test
     void testToString() {
+        String test = "\n" + "EventTO" + "\n"
+                + "id: " + "1" + "\n"
+                + "name: " + "event" + "\n"
+                + "businessUserId: " + "1"+ "\n"
+                + "description" + "description" + "\n"
+                + "datetime: " + "2020-06-06T20:00" + "\n"
+                + "longitude :" + "60.0" + "\n"
+                + "latitude: " + "70.0";
+        assertEquals(test, event.toString());
     }
 
     @Test
-    void testEquals() {
+    void testEqualsTrue() {
+        EventTO event2 = new EventTO(1, 1, "event", "description", time, 5, 60.00, 70.00, preferenceSet);
+        assertEquals(event2, event);
     }
 
     @Test
-    void testHashCode() {
+    void testEqualsFalse() {
+        EventTO event3 = new EventTO(2, 1, "event", "description", time, 5, 60.00, 70.00, preferenceSet);
+        assertNotEquals(event3, event);
+    }
+
+    @Test
+    void testHashCodeTrue() {
+        EventTO event2 = new EventTO(1, 1, "event", "description", time, 5, 60.00, 70.00, preferenceSet);
+        assertEquals(event2.hashCode(), event.hashCode());
+    }
+
+    @Test
+    void testHashCodeFalse() {
+        EventTO event3 = new EventTO(2, 1, "event", "description", time, 5, 60.00, 70.00, preferenceSet);
+        assertNotEquals(event3.hashCode(), event.hashCode());
     }
 
     @Test
@@ -119,6 +144,6 @@ class EventTOTest {
     @Test
     void hasDescriptionFalse() {
         EventTO event2 = new EventTO(1, 1, "event", null, time, 5, 60.00, 70.00, preferenceSet);
-        assertFalse(event.hasDescription());
+        assertFalse(event2.hasDescription());
     }
 }

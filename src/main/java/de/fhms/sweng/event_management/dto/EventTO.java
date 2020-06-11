@@ -28,7 +28,9 @@ public class EventTO implements Serializable {
 
 
     //Empty Constructor
-    public EventTO() {}
+    public EventTO() {
+
+    }
 
     //Constructor from Event Entitiy
     public EventTO (Event event) {
@@ -48,6 +50,18 @@ public class EventTO implements Serializable {
             this.preferences = event.getPreferences();
         }
 
+    }
+
+    public EventTO (int id, int businessUserId, String name, String description, LocalDateTime datetime, int radius, double longitude, double latitude, Set<Preference> preferences) {
+        this. id = id;
+        this.businessUserId = businessUserId;
+        this.name = name;
+        this.description = description;
+        this.datetime = datetime;
+        this.radius = radius;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.preferences = preferences;
     }
 
     //Override methods

@@ -29,7 +29,7 @@ public class BusinessUserTO implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName);
+        return Objects.hash(id, firstName, lastName, email);
     }
 
     //Getters and Setters

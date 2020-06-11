@@ -18,7 +18,7 @@ public class Event {
     private int id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn (name="business_user_id")
     private BusinessUser businessUserId;
 
     private String name;

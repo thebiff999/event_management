@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +21,9 @@ class EventTOTest {
 
     @BeforeEach
     void setUp() {
-        time = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String datetime = "2020-06-06 20:00";
+        time = LocalDateTime.parse(datetime, formatter);
         preference = new Preference();
         preference.setId(1);
         preference.setValue("Music");

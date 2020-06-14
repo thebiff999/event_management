@@ -1,61 +1,67 @@
 package de.fhms.sweng.event_management.security;
 
-import de.fhms.sweng.event_management.exceptions.NotAuthorizedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.util.WebUtils;
+import org.springframework.stereotype.Component;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
 
+    @Value("${security.jwt.token.expire-length:3600000}")
+    private long validityTime;
 
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-
-    private JwtUserDetailsService jwtUserDetailsService;
-
+    @Autowired
     private SigningKeyProvider keys;
 
     @Autowired
-    public JwtTokenProvider (SigningKeyProvider keys, JwtUserDetailsService jwtUserDetailsService){
-        this.jwtUserDetailsService = jwtUserDetailsService;
-        this.keys = keys;
-    }
+    private UserDetailsServiceImpl userDetailsService;
 
-    public String getUsername(String token) {
-        String result = Jwts.parser().setSigningKey(keys.getPublicKey()).parseClaimsJws(token).getBody().getSubject();
-        return result;
+    public String createJwt(String username, String role) {
+        Claims claims = Jwts.claims().setSubject(username);
+        claims.put("auth", role);
+
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + validityTime);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(keys.getPrivateKey())
+                .compact();
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(getUsername(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public boolean validateToken(String token) {
+    public String getUsername(String token) {
+        return Jwts.parser().setSigningKey(keys.getPublicKey()).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public boolean isValidJWT(String token) {
         try {
             Jwts.parser().setSigningKey(keys.getPublicKey()).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            throw new NotAuthorizedException("JWT invalid");
+            throw new ResourceNotFoundException("JWT invalid");
         }
     }
 
     public String resolveToken(HttpServletRequest req) {
-        Cookie bearerToken = WebUtils.getCookie(req,"Authorization");
-        if (bearerToken != null) {
-            return bearerToken.getValue();
+        String bearerToken = req.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
         }
         return null;
     }
 }
-

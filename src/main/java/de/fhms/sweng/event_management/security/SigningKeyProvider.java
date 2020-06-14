@@ -21,7 +21,7 @@ public class SigningKeyProvider {
 
     private PublicKey publicKey;
     private PrivateKey privateKey;
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @PostConstruct
     protected void loadSigningKeys() {

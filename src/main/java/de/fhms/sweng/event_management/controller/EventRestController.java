@@ -28,19 +28,19 @@ public class EventRestController {
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('EUSER')")
     public Set<EventTO> getAllEvents() {
-        LOGGER.info("GET-Request on /all recieved");
+        LOGGER.info("GET-Request on /all received");
         return eventService.getEvents();
     }
 
     @GetMapping("/byName")
     public Set<EventTO> getEventByName(@RequestParam(value="name")String name) {
-        LOGGER.info("GET-Request on /byName revieced with parameter {}", name);
+        LOGGER.info("GET-Request on /byName received with parameter {}", name);
         return eventService.getEventByName(name);
     }
 
     @GetMapping("/byId")
     public EventTO getEventById(@RequestParam(value="id")int id){
-        LOGGER.info("GET-Request on /byID recieved with parameter {}", id);
+        LOGGER.info("GET-Request on /byID received with parameter {}", id);
         return eventService.getEventTOById(id);
     }
 

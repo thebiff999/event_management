@@ -4,7 +4,6 @@
 #own rules
 *.log
 *.gz
-**/UserConsumerTest.java
 
 ### STS ###
 .apt_generated

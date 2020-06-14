@@ -4,6 +4,7 @@
 #own rules
 *.log
 *.gz
+/src/test/java/de.fhms.sweng.eventservice
 
 ### STS ###
 .apt_generated

@@ -48,6 +48,7 @@ public class UserConsumerTest {
 
     @Test
     void recieveNewBusinessUser() {
+        assertEquals(1,1);
         amqpTemplate.convertAndSend(exchange, key, user);
         //Thread.sleep(5000);
         assertNotNull(repo.findById(10).get());

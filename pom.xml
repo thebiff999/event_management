@@ -231,7 +231,7 @@
             
 		</plugins>
 
-        <resources>
+        <!--resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
@@ -250,7 +250,7 @@
                     <exclude>**/privateKey</exclude>
                 </excludes>
             </resource>
-        </resources>
+        </resources-->
         <!--testResources>
             <testResource>
                 <directory>src/test/resources</directory>

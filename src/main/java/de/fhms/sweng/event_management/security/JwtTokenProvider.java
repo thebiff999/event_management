@@ -20,13 +20,13 @@ public class JwtTokenProvider {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    private UserDetailsServiceImpl userDetailsService;
+    private JwtUserDetailsService jwtUserDetailsService;
 
     private SigningKeyProvider keys;
 
     @Autowired
-    public JwtTokenProvider (SigningKeyProvider keys, UserDetailsServiceImpl userDetailsService){
-        this.userDetailsService = userDetailsService;
+    public JwtTokenProvider (SigningKeyProvider keys, JwtUserDetailsService jwtUserDetailsService){
+        this.jwtUserDetailsService = jwtUserDetailsService;
         this.keys = keys;
     }
 
@@ -36,11 +36,11 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
+        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public boolean isValidJWT(String token) {
+    public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(keys.getPublicKey()).parseClaimsJws(token);
             return true;

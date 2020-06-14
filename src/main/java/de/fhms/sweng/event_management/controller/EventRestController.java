@@ -26,6 +26,7 @@ public class EventRestController {
 
 
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('EUSER')")
     public Set<EventTO> getAllEvents() {
         LOGGER.info("GET-Request on /all recieved");
         return eventService.getEvents();

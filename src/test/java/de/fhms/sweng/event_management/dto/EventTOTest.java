@@ -1,7 +1,6 @@
 package de.fhms.sweng.event_management.dto;
 
 import de.fhms.sweng.event_management.entities.Preference;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

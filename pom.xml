@@ -251,7 +251,7 @@
                 </excludes>
             </resource>
         </resources>
-        <testResources>
+        <!--testResources>
             <testResource>
                 <directory>src/test/resources</directory>
                 <filtering>false</filtering>
@@ -261,6 +261,6 @@
                     <include>*.*</include>
                 </includes>
             </testResource>
-        </testResources>
+        </testResources-->
 	</build>
 </project>

@@ -2,10 +2,7 @@ package de.fhms.sweng.event_management.producer;
 
 import de.fhms.sweng.event_management.dto.EventTO;
 import org.apache.qpid.server.SystemLauncher;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -48,9 +45,9 @@ public class EventProducerTest {
 
         private EventTO event;
 
-        @BeforeEach
+        @BeforeAll
         public void startBroker() throws Exception {
-            if (!brokerRunning) {
+
                 Map<String, Object> attributes = new HashMap<>();
                 URL initialConfig = EventProducer.class.getClassLoader().getResource("initial-config.json");
                 attributes.put("initialConfigurationLocation", initialConfig.toExternalForm());
@@ -58,7 +55,6 @@ public class EventProducerTest {
                 attributes.put("startupLoggedToSystemOut", true);
                 attributes.put("qpid.amqp_port", "5672");
                 systemLauncher.startup(attributes);
-                brokerRunning=true;
 
                 CachingConnectionFactory cf = new CachingConnectionFactory("localhost", 5672);
                 AmqpAdmin admin = new RabbitAdmin(cf);
@@ -71,7 +67,7 @@ public class EventProducerTest {
                 admin.declareQueue(queue2);
                 admin.declareBinding(BindingBuilder.bind(queue2).to(exchange).with(this.rKeyDel));
                 cf.destroy();
-            }
+
 
             event = new EventTO();
 

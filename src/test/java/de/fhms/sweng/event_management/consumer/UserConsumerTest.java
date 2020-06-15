@@ -46,6 +46,7 @@ public class UserConsumerTest {
     @BeforeEach
     public void startBroker() throws Exception {
 
+        if (queueString==null) {queueString = "gapp.test.queue.event.user";}
         LOGGER.debug("starting broker");
 
         Map<String, Object> attributes = new HashMap<>();
@@ -61,7 +62,7 @@ public class UserConsumerTest {
         LOGGER.debug("creating exhcange");
         DirectExchange exchange = new DirectExchange(EXCHANGE);
         admin.declareExchange(exchange);
-        LOGGER.debug("creating and binding queue1");
+        LOGGER.debug("creating and binding queue");
         Queue queue = new Queue(queueString, true);
         admin.declareQueue(queue);
         admin.declareBinding(BindingBuilder.bind(queue).to(exchange).with(KEY));

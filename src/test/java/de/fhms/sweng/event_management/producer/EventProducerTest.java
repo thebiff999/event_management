@@ -12,6 +12,7 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +21,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @SpringBootTest
 public class EventProducerTest {
 

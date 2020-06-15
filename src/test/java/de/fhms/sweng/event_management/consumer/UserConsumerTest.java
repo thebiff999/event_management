@@ -21,8 +21,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class UserConsumerTest {
 
@@ -63,7 +62,7 @@ public class UserConsumerTest {
         DirectExchange exchange = new DirectExchange(EXCHANGE);
         admin.declareExchange(exchange);
         LOGGER.debug("creating and binding queue");
-        Queue queue = new Queue(queueString, true);
+        Queue queue = new Queue(this.queueString, true);
         admin.declareQueue(queue);
         admin.declareBinding(BindingBuilder.bind(queue).to(exchange).with(KEY));
         cf.destroy();
@@ -83,7 +82,7 @@ public class UserConsumerTest {
         user.setEmail("tom@fhms.de");
         user.setFirstName("Tom");
         user.setLastName("Mustermann");
-        doNothing().when(userService).createBusinessUser(mapperService.convertToUser(user));
+        doReturn(null).when(userService).createBusinessUser(mapperService.convertToUser(user));
         amqpTemplate.convertAndSend(EXCHANGE, KEY, user);
         Thread.sleep(5000);
         verify(userService).createBusinessUser(mapperService.convertToUser(user));

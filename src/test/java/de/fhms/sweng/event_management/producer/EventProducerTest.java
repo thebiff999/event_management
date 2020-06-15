@@ -72,8 +72,8 @@ public class EventProducerTest {
         }
 
 
-        @AfterAll
-        public static void stopBroker() {
+        @AfterEach
+        public void stopBroker() {
             systemLauncher.shutdown();
         }
 

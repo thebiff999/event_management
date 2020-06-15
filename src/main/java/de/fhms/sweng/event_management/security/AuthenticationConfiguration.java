@@ -35,6 +35,7 @@ public class AuthenticationConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/rest/users/register").permitAll()
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/event/healthcheck").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable();
         http.headers().frameOptions().disable(); //h2-console uses i-frame

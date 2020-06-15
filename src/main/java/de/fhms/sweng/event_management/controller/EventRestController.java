@@ -50,9 +50,10 @@ public class EventRestController {
         return eventService.getEventTOById(id);
     }
 
-    @GetMapping("/test")
+    @GetMapping("/healthcheck")
+    @ResponseStatus(HttpStatus.OK)
     public String getTest() {
-        LOGGER.info("GET-Resquest on /test recieved");
+        LOGGER.info("GET-Resquest on /healthcheck recieved");
         return "Event Microservice is available";
     }
 

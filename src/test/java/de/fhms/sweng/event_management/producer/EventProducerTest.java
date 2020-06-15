@@ -29,13 +29,13 @@ public class EventProducerTest {
         private static final String QUEUE_NAME2 = "event.delete";
 
         @Value("${amqp.rabbitmq.exchange}")
-        private String exchange;
+        private static String exchangeString;
 
         @Value("${amqp.rabbitmq.routingkey.event.save}")
-        private String rKeySave;
+        private static String rKeySave;
 
         @Value("$amqp.rabbitmq.routingkey.event.delete")
-        private String rKeyDel;
+        private static String rKeyDel;
 
         @Autowired
         private AmqpTemplate amqpTemplate;
@@ -46,7 +46,7 @@ public class EventProducerTest {
         private EventTO event;
 
         @BeforeAll
-        public void startBroker() throws Exception {
+        public static void startBroker() throws Exception {
 
                 Map<String, Object> attributes = new HashMap<>();
                 URL initialConfig = EventProducer.class.getClassLoader().getResource("initial-config.json");
@@ -58,19 +58,20 @@ public class EventProducerTest {
 
                 CachingConnectionFactory cf = new CachingConnectionFactory("localhost", 5672);
                 AmqpAdmin admin = new RabbitAdmin(cf);
-                DirectExchange exchange = new DirectExchange(this.exchange);
+                DirectExchange exchange = new DirectExchange(exchangeString);
                 admin.declareExchange(exchange);
                 Queue queue1 = new Queue(QUEUE_NAME1, true);
                 admin.declareQueue(queue1);
-                admin.declareBinding(BindingBuilder.bind(queue1).to(exchange).with(this.rKeySave));
+                admin.declareBinding(BindingBuilder.bind(queue1).to(exchange).with(rKeySave));
                 Queue queue2 = new Queue(QUEUE_NAME2, true);
                 admin.declareQueue(queue2);
-                admin.declareBinding(BindingBuilder.bind(queue2).to(exchange).with(this.rKeyDel));
+                admin.declareBinding(BindingBuilder.bind(queue2).to(exchange).with(rKeyDel));
                 cf.destroy();
+        }
 
-
-            event = new EventTO();
-
+        @BeforeEach
+        public void createEvent() {
+                event = new EventTO();
         }
 
         @AfterAll

@@ -48,7 +48,6 @@ public class EventProducerTest {
         @BeforeEach
         public void startBroker() throws Exception {
 
-                if (!brokerRunning) {
                         Map<String, Object> attributes = new HashMap<>();
                         URL initialConfig = EventProducer.class.getClassLoader().getResource("initial-config.json");
                         attributes.put("initialConfigurationLocation", initialConfig.toExternalForm());
@@ -68,7 +67,7 @@ public class EventProducerTest {
                         admin.declareQueue(queue2);
                         admin.declareBinding(BindingBuilder.bind(queue2).to(exchange).with(rKeyDel));
                         cf.destroy();
-                }
+
         }
 
 

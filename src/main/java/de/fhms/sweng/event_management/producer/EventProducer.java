@@ -28,6 +28,7 @@ public class EventProducer {
     @Value("${amqp.rabbitmq.routingkey.event.delete}")
     private String deletedEventKey;
 
+
     public void sendNewEvent(EventTO event) {
         amqpTemplate.convertAndSend(exchange, newEventKey, event);
         LOGGER.info("Message sent with content: {}" ,event.toString());

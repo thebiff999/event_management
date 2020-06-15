@@ -100,6 +100,8 @@ public class EventTO implements Serializable {
         return businessUserId;
     }
 
+    public void setBusinessUserId(int businessUserId) { this.businessUserId = businessUserId; }
+
     public String getName() {
         return name;
     }

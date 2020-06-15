@@ -178,9 +178,13 @@ public class EventService {
     }
 
 
-    public Set<EventTO> getAllEventsByUser(int id) {
+    public Set<EventTO> getAllEventsByUser(String mail) {
 
-        Set<Event> events = eventRepository.findAllByUserId(id);
+        LOGGER.trace("trying to get all events from user {}", mail);
+        BusinessUser user = businessUserService.getBusinessUser(mail);
+        int id = user.getId();
+
+        Set<Event> events = eventRepository.findAllByUserId(user);
         if (!(events.isEmpty())) {
             LOGGER.info("Returning all events by user with id {}", id);
             return mapperService.convertToEventTO(events);

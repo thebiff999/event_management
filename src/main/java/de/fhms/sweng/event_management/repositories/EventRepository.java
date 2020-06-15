@@ -1,6 +1,7 @@
 package de.fhms.sweng.event_management.repositories;
 
 
+import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.entities.Event;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -14,7 +15,7 @@ public interface EventRepository extends CrudRepository<Event, Integer> {
     Set<Event> findByName(String name);
 
     @Query(value="select e from Event e where e.businessUserId = ?1")
-    Set<Event> findAllByUserId(int id);
+    Set<Event> findAllByUserId(BusinessUser businessUserId);
 
     @Query(value="select e from Event e where e.preferences =?1")
     Set<Event> findallByPreference(String preference);

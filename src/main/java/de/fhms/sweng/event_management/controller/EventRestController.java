@@ -1,6 +1,9 @@
 package de.fhms.sweng.event_management.controller;
 
 import de.fhms.sweng.event_management.dto.EventTO;
+import de.fhms.sweng.event_management.exceptions.NotAllowedException;
+import de.fhms.sweng.event_management.security.JwtTokenProvider;
+import de.fhms.sweng.event_management.services.BusinessUserService;
 import de.fhms.sweng.event_management.services.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,15 +21,18 @@ public class EventRestController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private EventService eventService;
+    private BusinessUserService userService;
+    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public EventRestController(EventService eventService) {
+    public EventRestController(EventService eventService, BusinessUserService userService, JwtTokenProvider jwtTokenProvider) {
         this.eventService = eventService;
+        this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
 
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('EUSER')")
     public Set<EventTO> getAllEvents() {
         LOGGER.info("GET-Request on /all received");
         return eventService.getEvents();
@@ -51,9 +57,11 @@ public class EventRestController {
     }
 
     @GetMapping("/byUser")
-    public Set<EventTO> getEventByUser(@RequestParam(value="id")int id) {
-        LOGGER.info("GET-Request on /byUser recieved with parameter {}", id);
-        return eventService.getAllEventsByUser(id);
+    @PreAuthorize("hasAuthority('EUSER')")
+    public Set<EventTO> getEventByUser(@RequestHeader String Authorization) {
+        String mail = jwtTokenProvider.getUsername(Authorization.substring(7));
+        LOGGER.info("GET-Request on /byUser recieved from user {}", mail);
+        return eventService.getAllEventsByUser(mail);
     }
 
     @GetMapping("/byPreference")
@@ -63,22 +71,48 @@ public class EventRestController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAuthority('EUSER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public EventTO createEvent(@RequestBody EventTO newEvent) {
+    public EventTO createEvent(@RequestBody EventTO newEvent, @RequestHeader String Authorization) {
         LOGGER.info("POST-Request recieved");
+        String mail = jwtTokenProvider.getUsername(Authorization.substring(7));
+        newEvent.setBusinessUserId(userService.getBusinessUser(mail).getId());
         return eventService.createEvent(newEvent);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEvent(@PathVariable(value="id")int id) {
+    @PreAuthorize("hasAuthority('EUSER')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteEvent(@PathVariable(value="id")int id, @RequestHeader String Authorization) {
         LOGGER.info("DELETE-Mapping recieved with id {}", id);
-        eventService.deleteEvent(id);
+        LOGGER.debug("Checking if the event with id {} belongs to the requesting user {}", id, Authorization.substring(7));
+        String mail = jwtTokenProvider.getUsername(Authorization.substring(7));
+        int userId = userService.getBusinessUser(mail).getId();
+        int ownerId = eventService.getEventById(id).getBusinessUserId();
+        if (userId == ownerId) {
+            eventService.deleteEvent(id);
+        }
+        else {
+            LOGGER.error("user with id {} tried to delete event with id {} which belongs to user with id {}", userId, id, ownerId);
+            throw new NotAllowedException("not allowed to delete events from another user");
+        }
     }
 
     @PutMapping("/{id}")
-    public EventTO updateEvent(@PathVariable("id") int id, @RequestBody EventTO updatedEvent) {
+    @PreAuthorize("hasAuthority('EUSER')")
+    @ResponseStatus(HttpStatus.OK)
+    public EventTO updateEvent(@PathVariable("id") int id, @RequestBody EventTO updatedEvent, @RequestHeader String Authorization) {
         LOGGER.info("PUT-Mapping recieved with id {}", id);
-        return eventService.updateEvent(id,updatedEvent);
+        LOGGER.debug("Checking if the event with id {} belongs to the requesting user {}", id, Authorization.substring(7));
+        String mail = jwtTokenProvider.getUsername(Authorization.substring(7));
+        int userId = userService.getBusinessUser(mail).getId();
+        int ownerId = eventService.getEventById(id).getBusinessUserId();
+        if (userId == ownerId) {
+            return eventService.updateEvent(id, updatedEvent);
+        }
+        else {
+            throw new NotAllowedException("not allowed to update events from another user");
+        }
     }
 
 

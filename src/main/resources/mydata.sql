@@ -1,5 +1,5 @@
 INSERT INTO events (id, datetime, description, name, radius, business_user_id, location_id) VALUES
-    (1, '2020-04-22T12:30:00', 'This is the description', 'Test Event', 5, 1, 1),
+    (1, '2020-04-22T12:30:00', 'This is the description', 'Test Event', 5, 0, 1),
     (2, '2020-06-13T11:00:00', 'Geburtstagsparty im Garten', 'Hans Geburtstag', 2, 1, 2);
 
 INSERT INTO business_users VALUES

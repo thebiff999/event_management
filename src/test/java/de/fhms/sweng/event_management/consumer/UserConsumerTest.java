@@ -38,9 +38,6 @@ public class UserConsumerTest {
     private AmqpTemplate amqpTemplate;
 
     @Autowired
-    private EventProducer eventProducer;
-
-    @Autowired
     private MapperService mapperService;
 
     @SpyBean
@@ -65,9 +62,9 @@ public class UserConsumerTest {
         DirectExchange exchange = new DirectExchange(EXCHANGE);
         admin.declareExchange(exchange);
         LOGGER.debug("creating and binding queue1");
-        Queue queue1 = new Queue(queueString, true);
-        admin.declareQueue(queue1);
-        admin.declareBinding(BindingBuilder.bind(queue1).to(exchange).with(KEY));
+        Queue queue = new Queue(queueString, true);
+        admin.declareQueue(queue);
+        admin.declareBinding(BindingBuilder.bind(queue).to(exchange).with(KEY));
         cf.destroy();
 
     }
@@ -81,6 +78,10 @@ public class UserConsumerTest {
     @Test
     void shouldReceiveUser() throws Exception {
         BusinessUserTO user = new BusinessUserTO();
+        user.setId(1);
+        user.setEmail("tom@fhms.de");
+        user.setFirstName("Tom");
+        user.setLastName("Mustermann");
         doNothing().when(userService).createBusinessUser(mapperService.convertToUser(user));
         amqpTemplate.convertAndSend(EXCHANGE, KEY, user);
         Thread.sleep(5000);

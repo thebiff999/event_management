@@ -29,13 +29,13 @@ public class EventProducerTest {
         private static final String QUEUE_NAME2 = "event.delete";
 
         @Value("${amqp.rabbitmq.exchange}")
-        private static String exchangeString;
+        private String exchangeString;
 
         @Value("${amqp.rabbitmq.routingkey.event.save}")
-        private static String rKeySave;
+        private String rKeySave;
 
         @Value("$amqp.rabbitmq.routingkey.event.delete")
-        private static String rKeyDel;
+        private String rKeyDel;
 
         @Autowired
         private AmqpTemplate amqpTemplate;
@@ -45,34 +45,32 @@ public class EventProducerTest {
 
         private EventTO event;
 
-        @BeforeAll
-        public static void startBroker() throws Exception {
-
-                Map<String, Object> attributes = new HashMap<>();
-                URL initialConfig = EventProducer.class.getClassLoader().getResource("initial-config.json");
-                attributes.put("initialConfigurationLocation", initialConfig.toExternalForm());
-                attributes.put("type", "Memory");
-                attributes.put("startupLoggedToSystemOut", true);
-                attributes.put("qpid.amqp_port", "5672");
-                systemLauncher.startup(attributes);
-
-                CachingConnectionFactory cf = new CachingConnectionFactory("localhost", 5672);
-                AmqpAdmin admin = new RabbitAdmin(cf);
-                DirectExchange exchange = new DirectExchange(exchangeString);
-                admin.declareExchange(exchange);
-                Queue queue1 = new Queue(QUEUE_NAME1, true);
-                admin.declareQueue(queue1);
-                admin.declareBinding(BindingBuilder.bind(queue1).to(exchange).with(rKeySave));
-                Queue queue2 = new Queue(QUEUE_NAME2, true);
-                admin.declareQueue(queue2);
-                admin.declareBinding(BindingBuilder.bind(queue2).to(exchange).with(rKeyDel));
-                cf.destroy();
-        }
-
         @BeforeEach
-        public void createEvent() {
-                event = new EventTO();
+        public void startBroker() throws Exception {
+
+                if (!brokerRunning) {
+                        Map<String, Object> attributes = new HashMap<>();
+                        URL initialConfig = EventProducer.class.getClassLoader().getResource("initial-config.json");
+                        attributes.put("initialConfigurationLocation", initialConfig.toExternalForm());
+                        attributes.put("type", "Memory");
+                        attributes.put("startupLoggedToSystemOut", true);
+                        attributes.put("qpid.amqp_port", "5672");
+                        systemLauncher.startup(attributes);
+
+                        CachingConnectionFactory cf = new CachingConnectionFactory("localhost", 5672);
+                        AmqpAdmin admin = new RabbitAdmin(cf);
+                        DirectExchange exchange = new DirectExchange(exchangeString);
+                        admin.declareExchange(exchange);
+                        Queue queue1 = new Queue(QUEUE_NAME1, true);
+                        admin.declareQueue(queue1);
+                        admin.declareBinding(BindingBuilder.bind(queue1).to(exchange).with(rKeySave));
+                        Queue queue2 = new Queue(QUEUE_NAME2, true);
+                        admin.declareQueue(queue2);
+                        admin.declareBinding(BindingBuilder.bind(queue2).to(exchange).with(rKeyDel));
+                        cf.destroy();
+                }
         }
+
 
         @AfterAll
         public static void stopBroker() {
@@ -82,6 +80,7 @@ public class EventProducerTest {
 
         @Test
         void shouldSendNewEvent() throws Exception {
+                event = new EventTO();
             eventProducer.sendNewEvent(event);
             EventTO receivedEvent = (EventTO) amqpTemplate.receiveAndConvert(QUEUE_NAME1, 5000);
             assertNotNull(receivedEvent);
@@ -89,6 +88,7 @@ public class EventProducerTest {
 
         @Test
         void shouldSendDeletedEvent() throws Exception {
+                event = new EventTO();
             eventProducer.sendDeletedEvent(event);
             EventTO deletedEvent = (EventTO) amqpTemplate.receiveAndConvert(QUEUE_NAME2, 5000);
             assertNotNull(deletedEvent);

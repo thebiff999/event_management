@@ -37,7 +37,7 @@ public class EventProducerTest {
         @Value("${amqp.rabbitmq.routingkey.event.save}")
         private String rKeySave;
 
-        @Value("$amqp.rabbitmq.routingkey.event.delete")
+        @Value("${amqp.rabbitmq.routingkey.event.delete}")
         private String rKeyDel;
 
         @Autowired

@@ -105,7 +105,7 @@ public class IntegrationTest {
     @Test
     void shouldGetEventById() {
         Event event = eventService.getEventById(1);
-        assertEquals(1, event.getId(1));
+        assertEquals(1, event.getId());
     }
 
     @Test

@@ -132,7 +132,7 @@ public class EventRestControllerTest {
                 .header("Authorization",this.AUTH_HEADER))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(0))
-                .andExpect(jsonPath("name").value("Test Event 1"));
+                .andExpect(jsonPath("name").value("TestEvent1"));
     }
 
     @Test
@@ -143,7 +143,7 @@ public class EventRestControllerTest {
                 .header("Authorization",this.AUTH_HEADER))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("*.id").value(0))
-                .andExpect(jsonPath("*.name").value("Test Event 1"));
+                .andExpect(jsonPath("*.name").value("TestEvent1"));
 
     }
 
@@ -154,8 +154,8 @@ public class EventRestControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization",this.AUTH_HEADER))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(0))
-                .andExpect(jsonPath("name").value("TestEvent1"));
+                .andExpect(jsonPath("*.id").value(0))
+                .andExpect(jsonPath("*.name").value("TestEvent1"));
     }
 
     @Test
@@ -165,8 +165,8 @@ public class EventRestControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization",this.AUTH_HEADER))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(0))
-                .andExpect(jsonPath("name").value("TestEvent1"));
+                .andExpect(jsonPath("*.id").value(0))
+                .andExpect(jsonPath("*.name").value("TestEvent1"));
     }
 
 

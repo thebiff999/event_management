@@ -16,7 +16,6 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -92,7 +91,7 @@ public class UserConsumerTest {
         doNothing().when(userService).createBusinessUser(userTO);
         amqpTemplate.convertAndSend(EXCHANGE, KEY, userTO);
         Thread.sleep(5000);
-        verify(userService).createBusinessUser(userTO);
+        verify(userService).createBusinessUser(refEq(userTO));
     }
 
 

@@ -2,6 +2,7 @@ package de.fhms.sweng.event_management.services;
 
 import de.fhms.sweng.event_management.dto.BusinessUserTO;
 import de.fhms.sweng.event_management.entities.BusinessUser;
+import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import de.fhms.sweng.event_management.repositories.BusinessUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,6 +71,22 @@ public class BusinessUserServiceTest {
         this.userService.createBusinessUser(newUserTO);
         verify(userRepository).save(newUser);
 
+    }
+
+    @Test
+    void shouldNotGetBusinessUserById() {
+        given(userRepository.findById(5)).willReturn(Optional.empty());
+        assertThrows(ResourceNotFoundException.class, () -> {
+            userService.getBusinessUser(5);
+        });
+    }
+
+    @Test
+    void shouldNotGetBusinessUserByMail() {
+        given(userRepository.findByMail("diesdas")).willReturn(Optional.empty());
+        assertThrows(ResourceNotFoundException.class, () -> {
+            userService.getBusinessUser("diesdas");
+        });
     }
 
 }

@@ -2,6 +2,7 @@ package de.fhms.sweng.event_management.services;
 
 import de.fhms.sweng.event_management.dto.EventTO;
 import de.fhms.sweng.event_management.entities.Preference;
+import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import de.fhms.sweng.event_management.repositories.PreferenceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,7 +65,7 @@ public class PreferenceServiceTest {
             assertEquals(preference, returnedPreference);
         }
         else {
-            assertTrue(false);
+            fail("no preference was returned");
         }
     }
 

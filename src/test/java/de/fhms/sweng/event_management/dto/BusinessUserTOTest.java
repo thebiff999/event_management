@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class BusinessUserTOTest {
 
     private BusinessUserTO user;
+    private BusinessUserTO equalUser;
+    private BusinessUserTO differentUser;
 
     @BeforeEach
     void setUp() {
@@ -17,6 +19,18 @@ class BusinessUserTOTest {
         user.setFirstName("first");
         user.setLastName("last");
         user.setEmail("first@last.de");
+
+        equalUser = new BusinessUserTO();
+        equalUser.setId(1);
+        equalUser.setFirstName("first");
+        equalUser.setLastName("last");
+        equalUser.setEmail("first@last.de");
+
+        differentUser = new BusinessUserTO();
+        differentUser.setId(2);
+        differentUser.setFirstName("Max");
+        differentUser.setLastName("Mustermann");
+        differentUser.setEmail("max@mustermann.de");
     }
 
     @Test
@@ -31,25 +45,17 @@ class BusinessUserTOTest {
 
     @Test
     void testHashCodeTrue() {
-        BusinessUserTO user2 = new BusinessUserTO();
-        user2.setId(1);
-        user2.setFirstName("first");
-        user2.setLastName("last");
-        user2.setEmail("first@last.de");
-
-        assertEquals(user.hashCode(), user2.hashCode());
-
+        assertEquals(user.hashCode(), equalUser.hashCode());
     }
 
     @Test
     void testHashCodeFalse() {
-        BusinessUserTO user3 = new BusinessUserTO();
-        user3.setId(2);
-        user3.setFirstName("first");
-        user3.setLastName("last");
-        user3.setEmail("first@last.de");
+        assertNotEquals(user.hashCode(), differentUser.hashCode());
+    }
 
-        assertNotEquals(user.hashCode(), user3.hashCode());
+    @Test
+    void testHashCodeSelf() {
+        assertEquals(user.hashCode(), user.hashCode());
     }
 
     @Test

@@ -166,6 +166,14 @@ public class EventServiceTest {
     }
 
     @Test
+    void shouldNotDeleteEvent() {
+        given(eventRepository.findById(5)).willReturn(Optional.empty());
+        assertThrows(ResourceNotFoundException.class, () -> {
+            eventService.deleteEvent(5);
+        });
+    }
+
+    @Test
     void shouldGetAllEvents() {
         given(eventRepository.findAll()).willReturn(events);
         given(mapperService.convertToEventTO(events)).willReturn(eventTOs);
@@ -174,26 +182,19 @@ public class EventServiceTest {
     }
 
     @Test
-    public void shouldTellEventIdUnknown() {
-        given(eventRepository.findById(5)).willReturn(Optional.empty());
-        assertThrows(ResourceNotFoundException.class, () -> {
-        eventService.getEventById(5);
-        });
-    }
-
-    @Test
-    public void shouldTellEventTOIdUnknown() {
-        given(eventRepository.findById(5)).willReturn(Optional.empty());
-        assertThrows(ResourceNotFoundException.class, () -> {
-            eventService.getEventById(5);
-        });
-    }
-
-    @Test
     void shouldGetEventTOById() {
         given(eventRepository.findById(0)).willReturn(Optional.of(event));
         EventTO returnedEvent = eventService.getEventTOById(0);
         assertEquals(eventTO, returnedEvent);
+    }
+
+
+    @Test
+    public void shouldNotGetEventTOById() {
+        given(eventRepository.findById(5)).willReturn(Optional.empty());
+        assertThrows(ResourceNotFoundException.class, () -> {
+            eventService.getEventById(5);
+        });
     }
 
     @Test
@@ -204,11 +205,64 @@ public class EventServiceTest {
     }
 
     @Test
+    void shouldNotGetEventById() {
+        given(eventRepository.findById(5)).willReturn(Optional.empty());
+        assertThrows(ResourceNotFoundException.class, () -> {
+            eventService.getEventById(5);
+        });
+    }
+
+    @Test
     void shouldGetEventByName() {
         given(eventRepository.findByName("value")).willReturn(events);
         given(mapperService.convertToEventTO(events)).willReturn(eventTOs);
         HashSet<EventTO> returnedSet = (HashSet<EventTO>) eventService.getEventByName("value");
         assertEquals(eventTOs, returnedSet);
+    }
+
+    @Test
+    void shouldNotGetEventByName() {
+        HashSet<Event> eventHashSet = new HashSet<Event>();
+        given(eventRepository.findByName("diesdas")).willReturn(eventHashSet);
+        assertThrows(ResourceNotFoundException.class, () -> {
+            eventService.getEventByName("diesdas");
+        });
+    }
+
+    @Test
+    void shouldGetAllEventsByUser() {
+        given(businessUserService.getBusinessUser("max@mustermann.de")).willReturn(user);
+        given(eventRepository.findAllByUserId(user)).willReturn(events);
+        given(mapperService.convertToEventTO(events)).willReturn(eventTOs);
+        Set<EventTO> returnedSet = eventService.getAllEventsByUser("max@mustermann.de");
+        assertEquals(eventTOs, returnedSet);
+    }
+
+    @Test
+    void shouldNotGetAllEventsByUser() {
+        HashSet<Event> emptySet = new HashSet<Event>();
+        given(businessUserService.getBusinessUser("max@mustermann.de")).willReturn(user);
+        given(eventRepository.findAllByUserId(user)).willReturn(emptySet);
+        assertThrows(ResourceNotFoundException.class, () -> {
+            eventService.getAllEventsByUser("max@mustermann.de");
+        });
+    }
+
+    @Test
+    void shouldGetAllEventsByPreference() {
+        given(eventRepository.findallByPreference("value")).willReturn(events);
+        given(mapperService.convertToEventTO(events)).willReturn(eventTOs);
+        Set<EventTO> returnedSet = eventService.getAllEventsByPreference("value");
+        assertEquals(eventTOs, returnedSet);
+    }
+
+    @Test
+    void shouldNotGetAllEventsByPreference() {
+        HashSet<Event> emptySet = new HashSet<Event>();
+        given(eventRepository.findallByPreference("value")).willReturn(emptySet);
+        assertThrows(ResourceNotFoundException.class, () -> {
+            eventService.getAllEventsByPreference("value");
+        });
     }
 
 

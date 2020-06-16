@@ -75,9 +75,9 @@ public class IntegrationTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     void shouldDeleteEvent() {
-        eventService.deleteEvent(0);
+        eventService.deleteEvent(1);
         assertThrows(ResourceNotFoundException.class, () -> {
-            eventRepository.findById(0);
+            eventRepository.findById(1);
         });
     }
 
@@ -95,5 +95,39 @@ public class IntegrationTest {
         EventTO expected = eventService.getEventTOById(0);
         assertEquals(expected, eventIterator.next());
     }
+
+    @Test
+    void shouldGetAllEvents() {
+        Set<EventTO> eventSet = eventService.getEvents();
+        assertFalse(eventSet.isEmpty());
+    }
+
+    @Test
+    void shouldGetEventById() {
+        Event event = eventService.getEventById(1);
+        assertEquals(1, event.getId(1));
+    }
+
+    @Test
+    void shouldNotGetEventById() {
+        assertThrows(ResourceNotFoundException.class, () -> {
+            eventService.getEventById(10);
+        });
+    }
+
+    @Test
+    void shouldGetEventTOById() {
+        EventTO event = eventService.getEventTOById(1);
+        assertEquals(1, event.getId());
+    }
+
+    @Test
+    void shouldNotGetEventTOById() {
+        assertThrows(ResourceNotFoundException.class, () -> {
+            eventService.getEventTOById(10);
+        });
+    }
+
+
 
 }

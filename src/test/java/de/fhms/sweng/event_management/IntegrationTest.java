@@ -16,12 +16,13 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @SpringBootTest
 public class IntegrationTest {
 
@@ -53,6 +54,7 @@ public class IntegrationTest {
         eventTO = new EventTO(3,1,"NewEvent","NewDescription", time, 3, 30.00, 30.00, prefSet);
     }
 
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     void shouldCreateEvent() {
         EventTO newEvent = eventService.createEvent(eventTO);
@@ -66,11 +68,13 @@ public class IntegrationTest {
 
     }
 
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     void shouldDeleteEvent() {
         eventService.deleteEvent(0);
-        Optional<Event> optEvent = eventRepository.findById(0);
-        assertNull(optEvent.get());
+        assertThrows(ResourceNotFoundException.class, () -> {
+            eventRepository.findById(0);
+        });
     }
 
     @Test
@@ -78,6 +82,14 @@ public class IntegrationTest {
         assertThrows(ResourceNotFoundException.class, () -> {
             eventService.deleteEvent(6);
         });
+    }
+
+    @Test
+    void shouldGetAllEventsByUser() {
+        Set<EventTO> eventSet = eventService.getAllEventsByUser("mail@test.com");
+        Iterator<EventTO> eventIterator = eventSet.iterator();
+        EventTO expected = eventService.getEventTOById(0);
+        assertEquals(expected, eventIterator.next());
     }
 
 }

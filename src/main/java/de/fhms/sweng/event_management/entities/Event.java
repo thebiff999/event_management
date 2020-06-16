@@ -92,6 +92,19 @@ public class Event {
         return Objects.hash(id, businessUserId, name);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) { return true; }
+        if (!(o instanceof Event)) { return false; }
+        Event e = (Event) o;
+        if (e.getId() == this.id && e.getName() == this.name && e.getDescription() == this.description && e.getLocation().equals(this.location) && e.getDatetime().equals(this.datetime) && e.getPreferences().equals(this.preferences) && e.getRadius() == this.radius && e.getBusinessUserId() == this.businessUserId.getId()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     //other methods
     public void addPreference(Preference preference) {
         preferences.add(preference);

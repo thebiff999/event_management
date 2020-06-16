@@ -8,28 +8,52 @@ import static org.junit.jupiter.api.Assertions.*;
 class LocationTest {
 
     private Location location;
+    private Location equalLocation;
+    private Location differentLocation;
 
     @BeforeEach
     void setUp() {
         location = new Location();
         location.setLongitude(50.00);
         location.setLatitude(60.00);
+
+        equalLocation = new Location();
+        equalLocation.setLongitude(50.00);
+        equalLocation.setLatitude(60.00);
+
+        differentLocation = new Location();
+        differentLocation.setLongitude(60.00);
+        differentLocation.setLatitude(50.00);
+    }
+
+    @Test
+    void testEqualsTrue() {
+        assertTrue(equalLocation.equals(location));
+    }
+
+    @Test
+    void testEqualsFalse() {
+        assertFalse(differentLocation.equals(location));
+    }
+
+    @Test
+    void testEqualsSelf() {
+        assertTrue(location.equals(location));
+    }
+
+    @Test
+    void testHashCodeSelf() {
+        assertEquals(location.hashCode(), location.hashCode());
     }
 
     @Test
     void testHashCodeTrue() {
-        Location l = new Location();
-        l.setLongitude(50.00);
-        l.setLatitude(60.00);
-        assertEquals(l.hashCode(), location.hashCode());
+        assertEquals(location.hashCode(), equalLocation.hashCode());
     }
 
     @Test
     void testHashCodeFalse() {
-        Location l = new Location();
-        l.setLongitude(60.00);
-        l.setLatitude(50.00);
-        assertNotEquals(l.hashCode(), location.hashCode());
+        assertNotEquals(location.hashCode(), differentLocation.hashCode());
     }
 
     @Test

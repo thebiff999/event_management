@@ -55,12 +55,6 @@ public class BusinessUserService {
 
     }
 
-    public void createBusinessUser(BusinessUser businessUser) {
-
-        businessUserRepository.save(businessUser);
-        LOGGER.info("Business User with id {} created", businessUser.getId());
-    }
-
     public void createBusinessUser(BusinessUserTO businessUserTO) {
         businessUserRepository.save(mapper.convertToUser(businessUserTO));
         LOGGER.info("Business User with id {} created", businessUserTO.getId());

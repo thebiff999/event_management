@@ -37,6 +37,19 @@ public class BusinessUser {
         return Objects.hash(id, firstName, lastName);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) { return true; }
+        if (!(o instanceof BusinessUser)) { return false; }
+        BusinessUser u = (BusinessUser) o;
+        if (u.getId() == this.id && u.getMail() == this.mail && u.getFirstName() == this.firstName && u.getLastName() == this.lastName) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     //Getters and Setters
     public int getId() {
         return id;

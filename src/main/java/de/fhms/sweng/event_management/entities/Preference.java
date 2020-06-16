@@ -40,6 +40,21 @@ public class Preference {
         return Objects.hash(id, value);
     }
 
+    @Override
+    public boolean equals (Object o) {
+        if (o == this) { return true; }
+        if (!(o instanceof Preference)) { return false; }
+        Preference p = (Preference) o;
+        if (p.getId() == this.id && p.getValue() == this.value) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    //Getters and setters
+
     public int getId() {
         return this.id;
     }

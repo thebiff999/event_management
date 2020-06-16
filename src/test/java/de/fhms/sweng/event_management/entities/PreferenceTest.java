@@ -14,6 +14,8 @@ class PreferenceTest {
     private Preference preference;
     private Event event;
     private HashSet<Event> eventSet;
+    private Preference equalPreference;
+    private Preference differentPreference;
 
     @BeforeEach
     void setUp() {
@@ -30,10 +32,44 @@ class PreferenceTest {
         preference.setId(1);
         preference.setValue("Value");
         preference.setEvents(eventSet);
+
+        equalPreference = new Preference();
+        equalPreference.setId(1);
+        equalPreference.setValue("Value");
+
+        differentPreference = new Preference();
+        differentPreference.setId(2);
+        differentPreference.setValue("different");
     }
 
     @Test
-    void testHashCode() {
+    void testHashCodeTrue() {
+        assertEquals(preference.hashCode(), equalPreference.hashCode());
+    }
+
+    @Test
+    void testHashCodeFalse() {
+        assertNotEquals(preference.hashCode(), differentPreference.hashCode());
+    }
+
+    @Test
+    void testHashCodeSelf() {
+        assertEquals(preference.hashCode(), preference.hashCode());
+    }
+
+    @Test
+    void testEqualsTrue() {
+        assertTrue(equalPreference.equals(preference));
+    }
+
+    @Test
+    void testEqualsFalse() {
+        assertFalse(differentPreference.equals(preference));
+    }
+
+    @Test
+    void testEqualsSelf() {
+        assertTrue(preference.equals(preference));
     }
 
     @Test

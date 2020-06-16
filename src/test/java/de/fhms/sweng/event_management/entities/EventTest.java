@@ -19,6 +19,8 @@ class EventTest {
     private HashSet<Preference> preferenceSet;
     private LocalDateTime time;
     private Location location;
+    private Event event2;
+    private Event event3;
 
     @BeforeEach
     void setUp() {
@@ -52,11 +54,28 @@ class EventTest {
         event.setRadius(5);
         event.setDatetime(time);
         event.setPreferences(preferenceSet);
+
+        event2 = new Event();
+        event2.setId(1);
+        event2.setBusinessUserId(user);
+        event2.setDescription("description");
+        event2.setName("event");
+        event2.setLocation(location);
+        event2.setRadius(5);
+        event2.setDatetime(time);
+        event2.setPreferences(preferenceSet);
+
+        event3 = new Event();
+        event3.setId(2);
+        event3.setBusinessUserId(user);
+        event3.setDescription("description2");
+        event3.setName("event2");
+        event3.setLocation(location);
+        event3.setRadius(5);
+        event3.setDatetime(time);
+        event3.setPreferences(preferenceSet);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
 
     @Test
     void hasPreferencesTrue() {
@@ -70,37 +89,33 @@ class EventTest {
     }
 
     @Test
-    void testToString() {
+    void testEqualsTrue() {
+        assertTrue(event.equals(event2));
+    }
+
+    @Test
+    void testEqualsFalse() {
+        assertFalse(event.equals(event3));
+    }
+
+    @Test
+    void testEqualsSelf() {
+        assertTrue(event.equals(event));
+    }
+
+    @Test
+    void testHashCodeSelf() {
+        assertEquals(event.hashCode(), event.hashCode());
     }
 
     @Test
     void testHashCodeTrue() {
-        Event event2 = new Event();
-        event2.setId(1);
-        event2.setBusinessUserId(user);
-        event2.setDescription("description");
-        event2.setName("event");
-        event2.setLocation(location);
-        event2.setRadius(5);
-        event2.setDatetime(time);
-        event2.setPreferences(preferenceSet);
-
         assertEquals(event.hashCode(), event2.hashCode());
     }
 
     @Test
     void testHashCodeFalse() {
-        Event event2 = new Event();
-        event2.setId(2);
-        event2.setBusinessUserId(user);
-        event2.setDescription("description2");
-        event2.setName("event2");
-        event2.setLocation(location);
-        event2.setRadius(5);
-        event2.setDatetime(time);
-        event2.setPreferences(preferenceSet);
-
-        assertNotEquals(event.hashCode(), event2.hashCode());
+        assertNotEquals(event.hashCode(), event3.hashCode());
     }
 
     @Test

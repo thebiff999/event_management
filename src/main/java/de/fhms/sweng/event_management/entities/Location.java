@@ -34,6 +34,19 @@ public class Location {
         return Objects.hash(longitude, latitude);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) { return true; }
+        if (!(o instanceof Location)) { return false; }
+        Location l = (Location) o;
+        if (l.getLongitude().equals(this.longitude) && l.getLatitude().equals(this.latitude)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     //Getters and Setters
     public Double getLongitude() {
         return longitude;

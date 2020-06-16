@@ -20,15 +20,11 @@ import java.util.Set;
 @Service
 public class MapperService {
 
-    private BusinessUserService businessUserService;
-    private PreferenceService preferenceService;
-    private EventRepository eventRepository;
+
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    public MapperService(BusinessUserService businessUserService, PreferenceService preferenceService) {
-        this.businessUserService = businessUserService;
-        this.preferenceService = preferenceService;
+
+    public MapperService() {
     }
 
     public Set<EventTO> convertToEventTO(Iterable<Event> eventSet) {

@@ -1,8 +1,10 @@
 package de.fhms.sweng.event_management.services;
 
+import de.fhms.sweng.event_management.dto.BusinessUserTO;
 import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import de.fhms.sweng.event_management.repositories.BusinessUserRepository;
+import org.mapstruct.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,13 @@ import java.util.Set;
 public class BusinessUserService {
 
     private BusinessUserRepository businessUserRepository;
+    private MapperService mapper;
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    BusinessUserService(BusinessUserRepository businessUserRepository) {
+    BusinessUserService(BusinessUserRepository businessUserRepository, MapperService mapperService) {
         this.businessUserRepository = businessUserRepository;
+        this.mapper = mapperService;
     }
 
     public BusinessUser getBusinessUser(int id) {
@@ -55,6 +59,11 @@ public class BusinessUserService {
 
         businessUserRepository.save(businessUser);
         LOGGER.info("Business User with id {} created", businessUser.getId());
+    }
+
+    public void createBusinessUser(BusinessUserTO businessUserTO) {
+        businessUserRepository.save(mapper.convertToUser(businessUserTO));
+        LOGGER.info("Business User with id {} created", businessUserTO.getId());
     }
 
 }

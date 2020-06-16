@@ -77,15 +77,16 @@ public class UserConsumerTest {
 
     @Test
     void shouldReceiveUser() throws Exception {
-        BusinessUserTO user = new BusinessUserTO();
-        user.setId(1);
-        user.setEmail("tom@fhms.de");
-        user.setFirstName("Tom");
-        user.setLastName("Mustermann");
-        doReturn(null).when(userService).createBusinessUser(mapperService.convertToUser(user));
-        amqpTemplate.convertAndSend(EXCHANGE, KEY, user);
+        BusinessUserTO userTO = new BusinessUserTO();
+        userTO.setId(1);
+        userTO.setEmail("tom@fhms.de");
+        userTO.setFirstName("Tom");
+        userTO.setLastName("Mustermann");
+
+        doReturn(null).when(userService).createBusinessUser(userTO);
+        amqpTemplate.convertAndSend(EXCHANGE, KEY, userTO);
         Thread.sleep(5000);
-        verify(userService).createBusinessUser(mapperService.convertToUser(user));
+        verify(userService).createBusinessUser(userTO);
     }
 
 

@@ -14,13 +14,11 @@ import org.springframework.stereotype.Component;
 public class UserConsumer {
 
     private BusinessUserService businessUserService;
-    private MapperService mapperService;
     private Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public UserConsumer(BusinessUserService businessUserService, MapperService mapperService) {
+    public UserConsumer(BusinessUserService businessUserService) {
         this.businessUserService = businessUserService;
-        this.mapperService = mapperService;
     }
 
 
@@ -29,7 +27,7 @@ public class UserConsumer {
         LOGGER.info("recieved message with new user with id {}", businessUserTO.getId());
         LOGGER.debug("Values of businessUserTO:");
         LOGGER.debug("{}", businessUserTO.toString());
-        businessUserService.createBusinessUser(mapperService.convertToUser(businessUserTO));
+        businessUserService.createBusinessUser(businessUserTO);
     }
 
 

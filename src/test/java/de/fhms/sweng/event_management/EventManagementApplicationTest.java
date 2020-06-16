@@ -14,4 +14,6 @@ class EventManagementApplicationTest {
     public void contextLoads() {
     }
 
+
+
 }

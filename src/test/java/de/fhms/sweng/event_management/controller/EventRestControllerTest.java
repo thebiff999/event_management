@@ -92,7 +92,7 @@ public class EventRestControllerTest {
         //Setting up the events
         event = new Event();
         event.setId(0);
-        event.setName("Test Event 1");
+        event.setName("TestEvent1");
         event.setDescription("Description 1");
         event.setRadius(1);
         event.setPreferences(preferenceSet);
@@ -145,6 +145,28 @@ public class EventRestControllerTest {
                 .andExpect(jsonPath("*.id").value(0))
                 .andExpect(jsonPath("*.name").value("Test Event 1"));
 
+    }
+
+    @Test
+    void testGetEventByName() throws Exception {
+        given(eventService.getEventByName("TestEvent1")).willReturn(eventTOSet);
+        this.mvc.perform(get("/event/byName/?name=TestEvent1")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",this.AUTH_HEADER))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(0))
+                .andExpect(jsonPath("name").value("TestEvent1"));
+    }
+
+    @Test
+    void testGetEventsByPreference() throws Exception {
+        given(eventService.getAllEventsByPreference("value")).willReturn(eventTOSet);
+        this.mvc.perform(get("/event/byPreference/?preference=value")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",this.AUTH_HEADER))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(0))
+                .andExpect(jsonPath("name").value("TestEvent1"));
     }
 
 

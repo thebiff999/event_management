@@ -16,6 +16,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
@@ -51,6 +52,7 @@ public class IntegrationTest {
         pref.setId(3);
         pref.setValue("New");
 
+        prefSet = new HashSet<Preference>();
         prefSet.add(pref);
 
         eventTO = new EventTO(3,1,"NewEvent","NewDescription", time, 3, 30.00, 30.00, prefSet);

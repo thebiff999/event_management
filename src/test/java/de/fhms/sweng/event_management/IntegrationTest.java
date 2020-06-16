@@ -51,6 +51,8 @@ public class IntegrationTest {
         pref.setId(3);
         pref.setValue("New");
 
+        prefSet.add(pref);
+
         eventTO = new EventTO(3,1,"NewEvent","NewDescription", time, 3, 30.00, 30.00, prefSet);
     }
 

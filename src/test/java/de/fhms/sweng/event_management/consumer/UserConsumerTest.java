@@ -15,8 +15,10 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -25,6 +27,8 @@ import java.util.Map;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@SpringBootTest
 public class UserConsumerTest {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -41,7 +45,7 @@ public class UserConsumerTest {
     @Autowired
     private MapperService mapperService;
 
-    @MockBean
+    @SpyBean
     BusinessUserService userService;
 
     @BeforeEach
@@ -85,8 +89,7 @@ public class UserConsumerTest {
         userTO.setFirstName("Tom");
         userTO.setLastName("Mustermann");
 
-        //doReturn(null).when(userService).createBusinessUser(userTO);
-        given(this.userService.createBusinessUser(userTO)).willReturn(null);
+        doNothing().when(userService).createBusinessUser(userTO);
         amqpTemplate.convertAndSend(EXCHANGE, KEY, userTO);
         Thread.sleep(5000);
         verify(userService).createBusinessUser(userTO);

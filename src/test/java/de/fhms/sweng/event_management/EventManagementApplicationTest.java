@@ -101,7 +101,7 @@ class EventManagementApplicationTest {
         Set<EventTO> eventSet = eventService.getAllEventsByUser("mail@test.com");
         Iterator<EventTO> eventIterator = eventSet.iterator();
         EventTO expected = eventService.getEventTOById(1);
-        assertEquals(expected, eventIterator.next());
+        assertEquals(expected.getId(), eventIterator.next().getId());
     }
 
     @Test

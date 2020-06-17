@@ -43,6 +43,12 @@ class PreferenceTest {
     }
 
     @Test
+    void constructorTest() {
+        Preference p = new Preference("new");
+        assertEquals("new", p.getValue());
+    }
+
+    @Test
     void testHashCodeTrue() {
         assertEquals(preference.hashCode(), equalPreference.hashCode());
     }

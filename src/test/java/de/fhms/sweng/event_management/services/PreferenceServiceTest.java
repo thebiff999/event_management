@@ -76,4 +76,11 @@ public class PreferenceServiceTest {
         verify(preferenceRepository, times(2)).findByValue("value");
     }
 
+    @Test
+    void shouldCreateNewPreferencesFromEvent() {
+        given(preferenceRepository.findByValue("value")).willReturn(Optional.empty());
+        preferenceService.createPreferencesFromEvent(event);
+        verify(preferenceRepository).save(any(Preference.class));
+    }
+
 }

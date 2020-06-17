@@ -52,10 +52,12 @@ public class EventRestControllerTest {
     private JwtTokenProvider jwtTokenProvider;
 
     private Event event;
+    private Event event2;
     private Set<Event> eventSet;
     private Preference preference;
     private Set<Preference> preferenceSet;
     private BusinessUser user;
+    private BusinessUser user2;
     private Location location;
     private LocalDateTime time;
     private EventTO eventTO;
@@ -80,6 +82,12 @@ public class EventRestControllerTest {
         user.setFirstName("Max");
         user.setLastName("Mustermann");
 
+        user2 = new BusinessUser();
+        user2.setId(2);
+        user2.setMail("dingsda");
+        user2.setFirstName("dings");
+        user2.setLastName("da");
+
         //Setting up Locations
         location = new Location();
         location.setLongitude(10.00);
@@ -103,6 +111,16 @@ public class EventRestControllerTest {
         event.setLocation(location);
         event.setDatetime(time);
         event.setBusinessUserId(user);
+
+        event2 = new Event();
+        event2.setId(1);
+        event2.setName("TestEvent2");
+        event2.setDescription("Description 2");
+        event2.setRadius(2);
+        event2.setPreferences(preferenceSet);
+        event2.setLocation(location);
+        event2.setDatetime(time);
+        event2.setBusinessUserId(user2);
 
         eventSet = new HashSet<Event>();
         eventSet.add(event);
@@ -223,6 +241,26 @@ public class EventRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("*.id").value(0))
                 .andExpect(jsonPath("*.name").value("TestEvent1"));
+    }
+
+    @Test
+    void testDeleteEvent() throws Exception {
+        given(userService.getBusinessUser("test@test.de")).willReturn(user);
+        given(eventService.getEventById(1)).willReturn(event);
+        this.mvc.perform(delete("/event/1")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",this.AUTH_HEADER))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testDeleteEventFail() throws Exception {
+        given(userService.getBusinessUser("test@test.de")).willReturn(user);
+        given(eventService.getEventById(2)).willReturn(event2);
+        this.mvc.perform(delete("/event/2")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",this.AUTH_HEADER))
+                .andExpect(status().isForbidden());
     }
 
 

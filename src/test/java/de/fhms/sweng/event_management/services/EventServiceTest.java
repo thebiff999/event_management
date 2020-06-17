@@ -32,14 +32,19 @@ public class EventServiceTest {
 
     private Event event;
     private Event event2;
+    private Event event3;
     private EventTO eventTO;
     private EventTO eventTO2;
+    private EventTO eventTO3;
     private LocalDateTime time;
     private BusinessUserTO userTO;
     private BusinessUser user;
     private Location location;
+    private Location location2;
     private Preference preference;
+    private Preference preference2;
     private Set<Preference> preferenceSet;
+    private Set<Preference> preferenceSet2;
     private EventService eventService;
     private HashSet<Event> events;
     private HashSet<EventTO> eventTOs;
@@ -87,12 +92,23 @@ public class EventServiceTest {
         location.setLongitude(10.00);
         location.setLatitude(10.00);
 
+        location2 = new Location();
+        location2.setLatitude(20.00);
+        location2.setLongitude(20.00);
+
         //Setting up PreferenceSets
         preference = new Preference();
         preference.setValue("value");
         preference.setId(1);
         preferenceSet = new HashSet<Preference>();
         preferenceSet.add(preference);
+
+        preference2 = new Preference();
+        preference2.setValue("value2");
+        preference2.setId(2);
+        preferenceSet2 = new HashSet<Preference>();
+        preferenceSet2.add(preference);
+        preferenceSet2.add(preference2);
 
 
         //Setting up the events
@@ -116,8 +132,19 @@ public class EventServiceTest {
         event2.setDatetime(time);
         event2.setBusinessUserId(user);
 
+        event3 = new Event();
+        event3.setId(0);
+        event3.setName("TEst Event 3");
+        event3.setDescription(("Description 3"));
+        event3.setRadius(3);
+        event3.setPreferences(preferenceSet2);
+        event3.setLocation(location);
+        event3.setDatetime(time);
+        event3.setBusinessUserId(user);
+
         eventTO = new EventTO(event);
         eventTO2 = new EventTO(event2);
+        eventTO3 = new EventTO(event3);
 
         events = new HashSet<Event>();
         events.add(event);
@@ -147,6 +174,18 @@ public class EventServiceTest {
         given(mapperService.convertToEventTO(event2)).willReturn(eventTO2);
         EventTO returnedEvent = eventService.updateEvent(0, eventTO2);
         assertEquals(eventTO2, returnedEvent);
+    }
+
+    @Test
+    void shouldUpdateWithNewPreferenceAndLocation() {
+        given(eventRepository.findById(0)).willReturn(Optional.of(event));
+        given(mapperService.convertToEventTO(event)).willReturn(eventTO);
+        given(preferenceService.getPrefernceByValue("value")).willReturn(Optional.of(preference));
+        given(preferenceService.getPrefernceByValue("value2")).willReturn(Optional.of(preference2));
+        given(eventRepository.save((event))).willReturn(event3);
+        given(mapperService.convertToEventTO(event3)).willReturn(eventTO3);
+        EventTO returnedEvent = eventService.updateEvent(0, eventTO3);
+        assertEquals(eventTO3, returnedEvent);
     }
 
     @Test

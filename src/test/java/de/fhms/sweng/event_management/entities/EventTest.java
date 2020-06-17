@@ -78,6 +78,32 @@ class EventTest {
 
 
     @Test
+    void ConstructorWithDescription() {
+        Event newEvent = new Event(user, "name", "description", time, 5, 10.00, 20.00, preferenceSet);
+        assertEquals(1, newEvent.getBusinessUserId());
+        assertEquals("name", newEvent.getName());
+        assertEquals("description", newEvent.getDescription());
+        assertEquals(time, event.getDatetime());
+        assertEquals(5, newEvent.getRadius());
+        assertEquals(10.00, newEvent.getLongitude());
+        assertEquals(20.00, newEvent.getLatitude());
+        assertEquals(preferenceSet, newEvent.getPreferences());
+    }
+
+    @Test
+    void ConstructorWithoutDescription() {
+        Event newEvent = new Event(user, "name", time, 5, 10.00, 20.00, preferenceSet);
+        assertEquals(1, newEvent.getBusinessUserId());
+        assertEquals("name", newEvent.getName());
+        assertEquals(null, newEvent.getDescription());
+        assertEquals(time, event.getDatetime());
+        assertEquals(5, newEvent.getRadius());
+        assertEquals(10.00, newEvent.getLongitude());
+        assertEquals(20.00, newEvent.getLatitude());
+        assertEquals(preferenceSet, newEvent.getPreferences());
+    }
+
+    @Test
     void hasPreferencesTrue() {
         assertTrue(event.hasPreferences());
     }

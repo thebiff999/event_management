@@ -135,10 +135,9 @@ public class EventServiceTest {
         event3 = new Event();
         event3.setId(0);
         event3.setName("TEst Event 3");
-        event3.setDescription(("Description 3"));
         event3.setRadius(3);
         event3.setPreferences(preferenceSet2);
-        event3.setLocation(location);
+        event3.setLocation(location2);
         event3.setDatetime(time);
         event3.setBusinessUserId(user);
 

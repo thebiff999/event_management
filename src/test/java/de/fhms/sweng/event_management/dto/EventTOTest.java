@@ -136,6 +136,13 @@ class EventTOTest {
     }
 
     @Test
+    void hasPreferencesEmpty() {
+        HashSet<Preference> emptySet = new HashSet<>();
+        event.setPreferences(emptySet);
+        assertFalse(event.hasPreferences());
+    }
+
+    @Test
     void hasDescriptionTrue() {
         assertTrue(event.hasDescription());
     }

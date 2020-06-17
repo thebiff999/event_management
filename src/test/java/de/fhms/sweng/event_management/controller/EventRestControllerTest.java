@@ -6,6 +6,7 @@ import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.entities.Event;
 import de.fhms.sweng.event_management.entities.Location;
 import de.fhms.sweng.event_management.entities.Preference;
+import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import de.fhms.sweng.event_management.security.JwtTokenProvider;
 import de.fhms.sweng.event_management.services.BusinessUserService;
 import de.fhms.sweng.event_management.services.EventService;
@@ -26,6 +27,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.ArgumentMatchers.any;
@@ -59,6 +62,7 @@ public class EventRestControllerTest {
     private Set<EventTO> eventTOSet;
     private static final String USERNAME = "max@mustermann.de";
     private final String AUTH_HEADER = "Bearer ANY-JWT-STRING";
+    private ResourceNotFoundException e;
 
     @BeforeEach
     public void setUp() {
@@ -107,6 +111,8 @@ public class EventRestControllerTest {
         eventTOSet = new HashSet<EventTO>();
         eventTOSet.add(eventTO);
 
+        e = new ResourceNotFoundException("event not found");
+
         String TEST_USER = "test@test.de";
         UserDetails userDetails = User.withUsername(USERNAME)
                 .password("***")
@@ -136,6 +142,16 @@ public class EventRestControllerTest {
     }
 
     @Test
+    void testGetEventByIdFail() throws Exception {
+        given(eventService.getEventTOById(5)).willThrow(e);
+            this.mvc.perform(get("/event/byId?id=5")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .header("Authorization",this.AUTH_HEADER))
+                    .andExpect(status().isNotFound());
+
+    }
+
+    @Test
     void testGetAllEvents() throws Exception {
         given(eventService.getEvents()).willReturn(eventTOSet);
         this.mvc.perform(get("/event/all")
@@ -159,9 +175,49 @@ public class EventRestControllerTest {
     }
 
     @Test
+    void testGetEventByNameFail() throws Exception {
+        given(eventService.getEventByName("diesdas")).willThrow(e);
+        this.mvc.perform(get("/event/byName?name=diesdas")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",this.AUTH_HEADER))
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
     void testGetEventsByPreference() throws Exception {
         given(eventService.getAllEventsByPreference("value")).willReturn(eventTOSet);
         this.mvc.perform(get("/event/byPreference/?preference=value")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",this.AUTH_HEADER))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("*.id").value(0))
+                .andExpect(jsonPath("*.name").value("TestEvent1"));
+    }
+
+    @Test
+    void testGetEventsByPreferenceFail() throws Exception {
+        given(eventService.getAllEventsByPreference("diesdas")).willThrow(e);
+        this.mvc.perform(get("/event/byPreference?preference=diesdas")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",this.AUTH_HEADER))
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    void testNotAuthorized() throws Exception {
+        this.mvc.perform(get("/event/byUser")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("fail", "willFail"))
+                .andExpect(status().is4xxClientError());
+    }
+
+
+    @Test
+    void testGetEventsByUser() throws Exception {
+        given(eventService.getAllEventsByUser("test@test.de")).willReturn(eventTOSet);
+        this.mvc.perform(get("/event/byUser")
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization",this.AUTH_HEADER))
                 .andExpect(status().isOk())

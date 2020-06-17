@@ -31,7 +31,7 @@ public class UserDetailsServiceImplTest {
     @Mock
     private BusinessUserRepository userRepository;
 
-    @BeforeAll
+    @BeforeEach
     public void setUp() {
         username = "max@mustermann.de";
         service = new UserDetailsServiceImpl(userRepository);

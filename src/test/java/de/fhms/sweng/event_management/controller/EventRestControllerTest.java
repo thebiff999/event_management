@@ -1,5 +1,6 @@
 package de.fhms.sweng.event_management.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fhms.sweng.event_management.dto.BusinessUserTO;
 import de.fhms.sweng.event_management.dto.EventTO;
 import de.fhms.sweng.event_management.entities.BusinessUser;
@@ -50,6 +51,8 @@ public class EventRestControllerTest {
     private BusinessUserService userService;
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
+
+    private final ObjectMapper mapper = new ObjectMapper();
 
     private Event event;
     private Event event2;

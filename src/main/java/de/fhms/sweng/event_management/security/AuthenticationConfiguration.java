@@ -11,6 +11,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * configures which routes should be secured and applies filters
+ */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AuthenticationConfiguration extends WebSecurityConfigurerAdapter {

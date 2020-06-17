@@ -9,6 +9,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * preference entity that relates to a preference in the database. preferences are mapped by events.
+ * @author Dennis Heuermann
+ */
 @JsonIgnoreProperties (ignoreUnknown = true)
 @Entity
 @Table(name="Preferences")

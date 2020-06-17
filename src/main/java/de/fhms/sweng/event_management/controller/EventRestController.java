@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-
+/**
+ * REST API Controller for interacting with the services
+ * @author Dennis Heuermann
+ */
 @RestController
 @RequestMapping("/event")
 public class EventRestController {
@@ -24,6 +27,12 @@ public class EventRestController {
     private BusinessUserService userService;
     private JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * standard constructor
+     * @param eventService
+     * @param userService
+     * @param jwtTokenProvider
+     */
     @Autowired
     public EventRestController(EventService eventService, BusinessUserService userService, JwtTokenProvider jwtTokenProvider) {
         this.eventService = eventService;
@@ -31,25 +40,42 @@ public class EventRestController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-
+    /**
+     * returns all events in the database
+     * @return
+     */
     @GetMapping("/all")
     public Set<EventTO> getAllEvents() {
         LOGGER.info("GET-Request on /all received");
         return eventService.getEvents();
     }
 
+    /**
+     * returns a set of events which include the name given as parameter
+     * @param name the name which the event service will look up and return events by
+     * @return event set
+     */
     @GetMapping("/byName")
     public Set<EventTO> getEventByName(@RequestParam(value="name")String name) {
         LOGGER.info("GET-Request on /byName received with parameter {}", name);
         return eventService.getEventByName(name);
     }
 
+    /**
+     * returns the event with matching id
+     * @param id
+     * @return single event
+     */
     @GetMapping("/byId")
     public EventTO getEventById(@RequestParam(value="id")int id){
         LOGGER.info("GET-Request on /byID received with parameter {}", id);
         return eventService.getEventTOById(id);
     }
 
+    /**
+     * healthcheck to see if the servie is available
+     * @return simple string
+     */
     @GetMapping("/healthcheck")
     @ResponseStatus(HttpStatus.OK)
     public String getTest() {
@@ -57,6 +83,11 @@ public class EventRestController {
         return "Event Microservice is available";
     }
 
+    /**
+     * returns the events from requesting user
+     * @param Authorization requesting user is read from the Auth Header
+     * @return event set
+     */
     @GetMapping("/byUser")
     @PreAuthorize("hasAuthority('EUSER')")
     public Set<EventTO> getEventByUser(@RequestHeader String Authorization) {
@@ -65,12 +96,23 @@ public class EventRestController {
         return eventService.getAllEventsByUser(mail);
     }
 
+    /**
+     * returns all events that include the requested preference
+     * @param preference
+     * @return event set
+     */
     @GetMapping("/byPreference")
     public Set<EventTO> getEventByPreference(@RequestParam(value="preference")String preference) {
         LOGGER.info("GET-Request on /byPreference recieved with parameter {}", preference);
         return eventService.getAllEventsByPreference(preference);
     }
 
+    /**
+     * POST-API for adding new events
+     * @param newEvent event to be added to database
+     * @param Authorization
+     * @return posted event as confirmation
+     */
     @PostMapping("")
     @PreAuthorize("hasAuthority('EUSER')")
     @ResponseStatus(HttpStatus.CREATED)
@@ -81,6 +123,11 @@ public class EventRestController {
         return eventService.createEvent(newEvent);
     }
 
+    /**
+     * DELETE-API for deleting events from database
+     * @param id id of event that should be deleted
+     * @param Authorization
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('EUSER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -99,6 +146,13 @@ public class EventRestController {
         }
     }
 
+    /**
+     * PUT-API to update existing events
+     * @param id id of event that should be updated
+     * @param updatedEvent updated version of event
+     * @param Authorization
+     * @return updated event as confirmation
+     */
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('EUSER')")
     @ResponseStatus(HttpStatus.OK)

@@ -14,6 +14,10 @@ import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Spring service that handles tasks related to BusinessUser entities
+ * @author Dennis Heuermann
+ */
 @Service
 public class BusinessUserService {
 
@@ -21,12 +25,23 @@ public class BusinessUserService {
     private MapperService mapper;
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
+    /**
+     * constructor with dependency injection for BusinessUserRepository and MapperService
+     * @param businessUserRepository
+     * @param mapperService
+     */
     @Autowired
     BusinessUserService(BusinessUserRepository businessUserRepository, MapperService mapperService) {
         this.businessUserRepository = businessUserRepository;
         this.mapper = mapperService;
     }
 
+    /**
+     * returns the user with the requested id
+     * throws a ResourceNotFoundException if the requested user is not in the database
+     * @param id search parameter
+     * @return user with requested id
+     */
     public BusinessUser getBusinessUser(int id) {
 
         Optional<BusinessUser> optionalBusinessUser = businessUserRepository.findById(id);
@@ -41,6 +56,11 @@ public class BusinessUserService {
 
     }
 
+    /**
+     * returns the user with the requested mail
+     * @param mail search parameter
+     * @return user with requested mail
+     */
     public BusinessUser getBusinessUser(String mail) {
 
         Optional<BusinessUser> optionalBusinessUser = businessUserRepository.findByMail(mail);
@@ -55,6 +75,10 @@ public class BusinessUserService {
 
     }
 
+    /**
+     * creates BusinessUser entity from Data Transfer Object and adds it to the repository
+     * @param businessUserTO
+     */
     public void createBusinessUser(BusinessUserTO businessUserTO) {
         businessUserRepository.save(mapper.convertToUser(businessUserTO));
         LOGGER.info("Business User with id {} created", businessUserTO.getId());

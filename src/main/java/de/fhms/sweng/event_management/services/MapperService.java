@@ -17,6 +17,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Spring service that converts data transfer objects into entities and vice versa
+ * @author Dennis Heuermann
+ */
 @Service
 public class MapperService {
 
@@ -24,9 +28,17 @@ public class MapperService {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 
+    /**
+     * empty constructor
+     */
     public MapperService() {
     }
 
+    /**
+     * converts a set of event entities into a set of event DTOs
+     * @param eventSet set to be converted
+     * @return converted set
+     */
     public Set<EventTO> convertToEventTO(Iterable<Event> eventSet) {
 
         Set<EventTO> eventTOSet = new HashSet<EventTO>();
@@ -41,7 +53,11 @@ public class MapperService {
 
     }
 
-    //Convert Event Entitiy to Data Transfer Object
+    /**
+     * converts an event entity into an event DTO
+     * @param event event to be converted
+     * @return converted event entity
+     */
     public EventTO convertToEventTO(Event event) {
 
         LOGGER.info("converting Event into EventTO");
@@ -54,6 +70,11 @@ public class MapperService {
     }
 
 
+    /**
+     * converts a BusinessUser DTO into a BusinessUser entitiy
+     * @param businessUserTO dto to be converted
+     * @return converted BusinessUser entitiy
+     */
     public BusinessUser convertToUser(BusinessUserTO businessUserTO) {
 
         LOGGER.info("convert BusinessUserTO to BusinessUser");

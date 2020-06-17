@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * Spring Component that sends messages to configurable amqp queues when an event is created or deleted
+ * @author Dennis Heuermann
+ */
 @Component
 public class EventProducer {
 
@@ -29,11 +33,19 @@ public class EventProducer {
     private String deletedEventKey;
 
 
+    /**
+     * send an event data transfer object of a newly created event to the configured queue
+     * @param event event dto of new event
+     */
     public void sendNewEvent(EventTO event) {
         amqpTemplate.convertAndSend(exchange, newEventKey, event);
         LOGGER.info("Message sent with content: {}" ,event.toString());
     }
 
+    /**
+     * send an event data transfer object of a deleted event to the configured queue
+     * @param event event dto of deleted event
+     */
     public void sendDeletedEvent(EventTO event) {
         amqpTemplate.convertAndSend(exchange, deletedEventKey, event);
         LOGGER.info("Message sent with content: {}", event.toString());

@@ -9,6 +9,10 @@ import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
 
+/**
+ * Event entity that relates to an event in the database
+ * @author: Dennis Heuermann
+ */
 @Entity
 @Table (name="Events")
 public class Event {
@@ -37,13 +41,25 @@ public class Event {
             inverseJoinColumns = @JoinColumn(name="preference_id"))
     Set<Preference> preferences;
 
-    //Standard-Constructor
+    /**
+     * empty constructor
+     */
     public Event() {
         preferences = new HashSet<Preference>();
         location = new Location();
     }
 
-    //Contructor with description
+    /**
+     * constructor with content
+     * @param businessUser owner of the event
+     * @param name name of the event
+     * @param description description of the event
+     * @param datetime date and time of the event
+     * @param radius radius of the event
+     * @param longitude longitude position of the event
+     * @param latitude latitude position of the event
+     * @param preferences set of preferences mapped by the event
+     */
     public Event(BusinessUser businessUser, String name, String description, LocalDateTime datetime, int radius, double longitude, double latitude, Set<Preference> preferences) {
 
         this.businessUserId = businessUser;
@@ -56,7 +72,16 @@ public class Event {
 
     }
 
-    //Constructor without description
+    /**
+     * constructor with content but without description
+     * @param businessUser owner of the event
+     * @param name name of the event
+     * @param datetime date and time of the event
+     * @param radius radius of the event
+     * @param longitude longitude position of the event
+     * @param latitude latitude position of the event
+     * @param preferences set of preferences mapped by the event
+     */
     public Event(BusinessUser businessUser, String name, LocalDateTime datetime, int radius, double longitude, double latitude, Set<Preference> preferences) {
 
         this.businessUserId = businessUser;

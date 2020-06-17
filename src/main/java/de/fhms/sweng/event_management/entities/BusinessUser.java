@@ -4,6 +4,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * BusinessUser entity that relates to a event user in the database
+ * @author: Dennis Heuermann
+ */
 @Entity
 @Table (name="Business_Users")
 public class BusinessUser {
@@ -26,7 +30,9 @@ public class BusinessUser {
     private Set<Event> events = new HashSet<Event>();
 
 
-    //Empty Constructor
+    /**
+     * empty constructor which automaticlly sets the role 'EUSER' since this service only deals with users who create and own events
+     */
     public BusinessUser() {
         this.role = "EUSER";
     }

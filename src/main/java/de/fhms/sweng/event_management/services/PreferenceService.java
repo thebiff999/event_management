@@ -13,21 +13,38 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Spring service that handles tasks related to preference entities
+ * @author Dennis Heuermann
+ */
 @Service
 public class PreferenceService {
 
     private PreferenceRepository preferenceRepository;
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
+    /**
+     * constructor with dependency injection for PreferenceRepository
+     * @param preferenceRepository
+     */
     @Autowired
     public PreferenceService(PreferenceRepository preferenceRepository) {
         this.preferenceRepository = preferenceRepository;
     }
 
+    /**
+     * returns an Optional of Preference that matches the requested value
+     * @param value search parameter
+     * @return
+     */
     public Optional<Preference> getPrefernceByValue(String value) {
         return preferenceRepository.findByValue(value);
     }
 
+    /**
+     * iterates through the preference set of the event parameter and creates preferences that are not yet in the repository
+     * @param event event whose preferences should be added
+     */
     public void createPreferencesFromEvent(EventTO event) {
         LOGGER.info("creating preferences from event");
         if (event.hasPreferences()) {

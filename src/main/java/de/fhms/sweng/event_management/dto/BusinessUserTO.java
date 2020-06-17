@@ -5,6 +5,10 @@ import de.fhms.sweng.event_management.entities.Preference;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * data transfer object of BusinessUser entity
+ * @author Dennis Heuermann
+ */
 @JsonIgnoreProperties (ignoreUnknown = true)
 public class BusinessUserTO implements Serializable {
 
@@ -13,7 +17,9 @@ public class BusinessUserTO implements Serializable {
     private String lastName;
     private String email;
 
-    //Empty constructor
+    /**
+     * empty constructor
+     */
     public BusinessUserTO() {
     }
 

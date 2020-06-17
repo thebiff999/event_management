@@ -3,6 +3,10 @@ package de.fhms.sweng.event_management.entities;
 import javax.persistence.*;
 import java.util.Objects;
 
+/**
+ * location entity that relates to a location in the database. Used to save the location of an event.
+ * @author Dennis Heuermann
+ */
 @Entity
 @Table (name="Locations")
 public class Location {
@@ -25,7 +29,9 @@ public class Location {
 
     }
 
-    //Empty Constructor
+    /**
+     * empty constructor
+     */
     public Location() {}
 
     //Override methods

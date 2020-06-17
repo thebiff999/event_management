@@ -12,6 +12,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * data transfer Object of Event entitiy
+ * @author Dennis Heuermann
+ */
 public class EventTO implements Serializable {
 
     private int id;
@@ -27,12 +31,17 @@ public class EventTO implements Serializable {
     private Set<Preference> preferences;
 
 
-    //Empty Constructor
+    /**
+     * empty constructor
+     */
     public EventTO() {
 
     }
 
-    //Constructor from Event Entitiy
+    /**
+     * constructs an EventTO Object from an Event entitiy
+     * @param event
+     */
     public EventTO (Event event) {
         this.id = event.getId();
         this.businessUserId = event.getBusinessUserId();
@@ -46,12 +55,27 @@ public class EventTO implements Serializable {
         this.latitude = event.getLatitude();
 
 
+        /**
+         * checks if the object has preferences set
+         */
         if (event.hasPreferences()) {
             this.preferences = event.getPreferences();
         }
 
     }
 
+    /**
+     * constructor with content
+     * @param id id of EventTO
+     * @param businessUserId id of the owner
+     * @param name name of the event
+     * @param description description of the event
+     * @param datetime date and time of the event
+     * @param radius radius of the event
+     * @param longitude longitude position of the event
+     * @param latitude latitude position of the event
+     * @param preferences set of preferences the event maps
+     */
     public EventTO (int id, int businessUserId, String name, String description, LocalDateTime datetime, int radius, double longitude, double latitude, Set<Preference> preferences) {
         this. id = id;
         this.businessUserId = businessUserId;

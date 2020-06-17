@@ -16,6 +16,10 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Spring service that handles tasks related to Event entities
+ * @author Dennis Heuermann
+ */
 @Service
 public class EventService {
 
@@ -26,6 +30,14 @@ public class EventService {
     private EventProducer eventProducer;
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
+    /**
+     * constructor with dependency injection for EventRepository, BusinessUserRepository, PreferenceService, MapperService and EventProducer
+     * @param eventRepository
+     * @param businessUserService
+     * @param preferenceService
+     * @param mapperService
+     * @param eventProducer
+     */
     @Autowired
     public EventService(EventRepository eventRepository, BusinessUserService businessUserService, PreferenceService preferenceService, MapperService mapperService, EventProducer eventProducer) {
         this.eventRepository = eventRepository;
@@ -36,6 +48,13 @@ public class EventService {
     }
 
 
+    /**
+     * creates Event entity from a Data Transfer Object and adds it to the event repository
+     * maps the event to corresponding BusinessUSer and Preference entities
+     * calls the EventProducer to send the created event as a DTO to a message server
+     * @param eventTO mapped DTO from event parameter
+     * @return
+     */
     @Transactional
     public EventTO createEvent(EventTO eventTO) {
         LOGGER.info("start of createEvent");
@@ -69,6 +88,12 @@ public class EventService {
         return newEventTO;
     }
 
+    /**
+     * deletes an event entitiy from the event repository
+     * throws a ResourceNotFoundException if there is no event with the requested id
+     * calls the EventProducer to send the deleted event as a DTO to a message server
+     * @param id
+     */
     @Transactional
     public void deleteEvent(int id) {
         LOGGER.info("deleting event wit id {}", id);
@@ -85,6 +110,14 @@ public class EventService {
 
     }
 
+    /**
+     * updates an existing event in the event repository
+     * checks if there actually are changes to the event
+     * calls the PreferenceService is the updated event contains new preferences
+     * @param id id of event that should be updated
+     * @param eventTO updated event dto
+     * @return
+     */
     @Transactional
     public EventTO updateEvent(int id, EventTO eventTO) {
 
@@ -130,6 +163,10 @@ public class EventService {
 
     }
 
+    /**
+     * returns a set with every event in the repository
+     * @return set of every event
+     */
     public Set<EventTO> getEvents() {
 
         Iterable<Event> events = eventRepository.findAll();
@@ -138,6 +175,12 @@ public class EventService {
 
     }
 
+    /**
+     * returns an event with the requested id
+     * throws a ResourceNotFoundException if there is no event with the requested id
+     * @param id search parameter
+     * @return event with requested id
+     */
     public Event getEventById(int id) {
         Optional<Event> optionalEvent = eventRepository.findById(id);
         if (optionalEvent.isPresent()) {
@@ -150,6 +193,12 @@ public class EventService {
         }
     }
 
+    /**
+     * returns a data transfer object of an event with the requested id
+     * throws a ResourceNotFoundException if there is no event with the requested id
+     * @param id search parameter
+     * @return event dto with requested id
+     */
     public EventTO getEventTOById(int id) {
 
         EventTO eventTO;
@@ -164,6 +213,12 @@ public class EventService {
         }
     }
 
+    /**
+     * returns a set of every event that contains the requested parameter
+     * throws a ResourceNotFoundException if no event matches the parameter
+     * @param name search parameter
+     * @return set of events that match the request parameter
+     */
     public Set<EventTO> getEventByName(String name) {
 
         Set<Event> events = eventRepository.findByName(name);
@@ -178,6 +233,12 @@ public class EventService {
     }
 
 
+    /**
+     * returns a set of event DTOs with every event from the requested user mail
+     * throws a ResourceNotFoundException if there are no events by the requested user
+     * @param mail search parameter
+     * @return set of events from requested user
+     */
     public Set<EventTO> getAllEventsByUser(String mail) {
 
         LOGGER.trace("trying to get all events from user {}", mail);
@@ -195,6 +256,12 @@ public class EventService {
         }
     }
 
+    /**
+     * returns a set of event DTOs that match the requested preference
+     * throws a ResourceNotFoundException if no event matches the requested preference
+     * @param preference search parameter
+     * @return set of events matching the request parameter
+     */
     public Set<EventTO> getAllEventsByPreference(String preference) {
         Set<Event> events = eventRepository.findallByPreference(preference);
         if (!(events.isEmpty())) {

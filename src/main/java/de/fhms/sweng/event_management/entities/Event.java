@@ -30,7 +30,7 @@ public class Event {
     @JoinColumn (name = "location_id", referencedColumnName = "id")
     private Location location;
 
-    @ManyToMany (cascade = CascadeType.MERGE)
+    @ManyToMany (cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name="event_preferences",
             joinColumns = @JoinColumn(name="event_id"),

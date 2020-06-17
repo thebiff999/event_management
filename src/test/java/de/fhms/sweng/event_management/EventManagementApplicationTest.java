@@ -33,6 +33,7 @@ class EventManagementApplicationTest {
     private LocalDateTime time;
     private Preference pref;
     private Set<Preference> prefSet;
+    private int toDelete;
 
     @Autowired
     private EventService eventService;
@@ -64,11 +65,12 @@ class EventManagementApplicationTest {
         eventTO = new EventTO(3,1,"NewEvent","NewDescription", time, 3, 30.00, 30.00, prefSet);
     }
 
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+
     @Test
     void shouldCreateEvent() {
         EventTO newEvent = eventService.createEvent(eventTO);
         int id = newEvent.getId();
+        toDelete = id;
         Optional<Event> optEvent = eventRepository.findById(id);
         if (!(optEvent.isEmpty())) {
             Event event = optEvent.get();
@@ -78,12 +80,12 @@ class EventManagementApplicationTest {
 
     }
 
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+
     @Test
     void shouldDeleteEvent() {
-        eventService.deleteEvent(1);
+        eventService.deleteEvent(toDelete);
         assertThrows(ResourceNotFoundException.class, () -> {
-            eventRepository.findById(1);
+            eventRepository.findById(toDelete);
         });
     }
 

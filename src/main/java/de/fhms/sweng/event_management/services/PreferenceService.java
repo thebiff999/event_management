@@ -25,7 +25,7 @@ public class PreferenceService {
 
     /**
      * constructor with dependency injection for PreferenceRepository
-     * @param preferenceRepository
+     * @param preferenceRepository Preference Repository
      */
     @Autowired
     public PreferenceService(PreferenceRepository preferenceRepository) {
@@ -35,7 +35,7 @@ public class PreferenceService {
     /**
      * returns an Optional of Preference that matches the requested value
      * @param value search parameter
-     * @return
+     * @return Optional of Preference with requested value
      */
     public Optional<Preference> getPrefernceByValue(String value) {
         return preferenceRepository.findByValue(value);

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * This class receives new users and tells the business user service to add them in the database
- * @author: Dennis Heuermann
+ * @author Dennis Heuermann
  */
 @Component
 public class UserConsumer {
@@ -22,7 +22,7 @@ public class UserConsumer {
 
     /**
      * standard constructor
-     * @param businessUserService
+     * @param businessUserService BusinessUser Service
      */
     @Autowired
     public UserConsumer(BusinessUserService businessUserService) {

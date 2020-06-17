@@ -11,7 +11,7 @@ import javax.persistence.*;
 
 /**
  * Event entity that relates to an event in the database
- * @author: Dennis Heuermann
+ * @author Dennis Heuermann
  */
 @Entity
 @Table (name="Events")

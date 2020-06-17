@@ -32,11 +32,11 @@ public class EventService {
 
     /**
      * constructor with dependency injection for EventRepository, BusinessUserRepository, PreferenceService, MapperService and EventProducer
-     * @param eventRepository
-     * @param businessUserService
-     * @param preferenceService
-     * @param mapperService
-     * @param eventProducer
+     * @param eventRepository Event Repository
+     * @param businessUserService BusinessUSer Service
+     * @param preferenceService Preference Service
+     * @param mapperService MapperService
+     * @param eventProducer EventProducer
      */
     @Autowired
     public EventService(EventRepository eventRepository, BusinessUserService businessUserService, PreferenceService preferenceService, MapperService mapperService, EventProducer eventProducer) {
@@ -53,7 +53,7 @@ public class EventService {
      * maps the event to corresponding BusinessUSer and Preference entities
      * calls the EventProducer to send the created event as a DTO to a message server
      * @param eventTO mapped DTO from event parameter
-     * @return
+     * @return event DTO as confirmation
      */
     @Transactional
     public EventTO createEvent(EventTO eventTO) {
@@ -92,7 +92,7 @@ public class EventService {
      * deletes an event entitiy from the event repository
      * throws a ResourceNotFoundException if there is no event with the requested id
      * calls the EventProducer to send the deleted event as a DTO to a message server
-     * @param id
+     * @param id id of event that should be deleted
      */
     @Transactional
     public void deleteEvent(int id) {
@@ -116,7 +116,7 @@ public class EventService {
      * calls the PreferenceService is the updated event contains new preferences
      * @param id id of event that should be updated
      * @param eventTO updated event dto
-     * @return
+     * @return event DTO as confirmation
      */
     @Transactional
     public EventTO updateEvent(int id, EventTO eventTO) {

@@ -40,7 +40,7 @@ public class EventTO implements Serializable {
 
     /**
      * constructs an EventTO Object from an Event entitiy
-     * @param event
+     * @param event event from which the DTO will be constructed
      */
     public EventTO (Event event) {
         this.id = event.getId();
@@ -54,10 +54,6 @@ public class EventTO implements Serializable {
         this.longitude = event.getLongitude();
         this.latitude = event.getLatitude();
 
-
-        /**
-         * checks if the object has preferences set
-         */
         if (event.hasPreferences()) {
             this.preferences = event.getPreferences();
         }

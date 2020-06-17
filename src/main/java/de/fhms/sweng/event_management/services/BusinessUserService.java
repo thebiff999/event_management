@@ -27,8 +27,8 @@ public class BusinessUserService {
 
     /**
      * constructor with dependency injection for BusinessUserRepository and MapperService
-     * @param businessUserRepository
-     * @param mapperService
+     * @param businessUserRepository BusinessUser Repository
+     * @param mapperService MapperService
      */
     @Autowired
     BusinessUserService(BusinessUserRepository businessUserRepository, MapperService mapperService) {
@@ -77,7 +77,7 @@ public class BusinessUserService {
 
     /**
      * creates BusinessUser entity from Data Transfer Object and adds it to the repository
-     * @param businessUserTO
+     * @param businessUserTO DTO object from which BusinessUser entity will be created
      */
     public void createBusinessUser(BusinessUserTO businessUserTO) {
         businessUserRepository.save(mapper.convertToUser(businessUserTO));

@@ -10,9 +10,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class ResourceNotFoundException extends RuntimeException{
 
+    /**
+     * constructor with a customizable message
+     * @param message String that will be shown as the exception message
+     */
     public ResourceNotFoundException(String message) {
         super(message);
     }
+
+    /**
+     * empty constructor with prefilled message
+     */
     public ResourceNotFoundException() { super("Authentication failed"); }
 
 }

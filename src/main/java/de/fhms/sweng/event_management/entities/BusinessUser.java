@@ -6,7 +6,7 @@ import java.util.Set;
 
 /**
  * BusinessUser entity that relates to a event user in the database
- * @author: Dennis Heuermann
+ * @author Dennis Heuermann
  */
 @Entity
 @Table (name="Business_Users")

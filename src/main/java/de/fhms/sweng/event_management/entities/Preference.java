@@ -28,12 +28,17 @@ public class Preference {
     @ManyToMany (mappedBy = "preferences")
     private Set<Event> events;
 
-    //Empty Constructor
+    /**
+     * empty constructor
+     */
     public Preference() {
         events = new HashSet<Event>();
     }
 
-    //Constructor
+    /**
+     * constructor with value
+     * @param value preference value
+     */
     public Preference(String value) {
         this.value = value;
     }

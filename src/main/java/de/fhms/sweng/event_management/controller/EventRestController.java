@@ -29,9 +29,9 @@ public class EventRestController {
 
     /**
      * standard constructor
-     * @param eventService
-     * @param userService
-     * @param jwtTokenProvider
+     * @param eventService Event Service
+     * @param userService BusinessUSer Service
+     * @param jwtTokenProvider JwtTokenProvider
      */
     @Autowired
     public EventRestController(EventService eventService, BusinessUserService userService, JwtTokenProvider jwtTokenProvider) {
@@ -42,7 +42,7 @@ public class EventRestController {
 
     /**
      * returns all events in the database
-     * @return
+     * @return set of all events
      */
     @GetMapping("/all")
     public Set<EventTO> getAllEvents() {
@@ -63,7 +63,7 @@ public class EventRestController {
 
     /**
      * returns the event with matching id
-     * @param id
+     * @param id request id
      * @return single event
      */
     @GetMapping("/byId")
@@ -98,7 +98,7 @@ public class EventRestController {
 
     /**
      * returns all events that include the requested preference
-     * @param preference
+     * @param preference search parameter
      * @return event set
      */
     @GetMapping("/byPreference")
@@ -110,7 +110,7 @@ public class EventRestController {
     /**
      * POST-API for adding new events
      * @param newEvent event to be added to database
-     * @param Authorization
+     * @param Authorization Authorization Header
      * @return posted event as confirmation
      */
     @PostMapping("")
@@ -126,7 +126,7 @@ public class EventRestController {
     /**
      * DELETE-API for deleting events from database
      * @param id id of event that should be deleted
-     * @param Authorization
+     * @param Authorization Authorization Header
      */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('EUSER')")
@@ -150,7 +150,7 @@ public class EventRestController {
      * PUT-API to update existing events
      * @param id id of event that should be updated
      * @param updatedEvent updated version of event
-     * @param Authorization
+     * @param Authorization Authorization Header
      * @return updated event as confirmation
      */
     @PutMapping("/{id}")

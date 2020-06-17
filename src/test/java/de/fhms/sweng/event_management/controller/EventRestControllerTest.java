@@ -152,6 +152,44 @@ public class EventRestControllerTest {
 
 
     @Test
+    void testPostEvent() throws Exception {
+        given(userService.getBusinessUser("test@test.de")).willReturn(user);
+        given(eventService.createEvent(eventTO)).willReturn(eventTO);
+        this.mvc.perform(post("/event")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",this.AUTH_HEADER)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(eventTO)))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    void testUpdateEvent() throws Exception {
+        given(userService.getBusinessUser("test@test.de")).willReturn(user);
+        given(eventService.getEventById(1)).willReturn(event);
+        given(eventService.updateEvent(1, eventTO)).willReturn(eventTO);
+        this.mvc.perform(put("/event/1")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",this.AUTH_HEADER)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(eventTO)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testUpdateEventFailure() throws Exception {
+        given(userService.getBusinessUser("test@test.de")).willReturn(user);
+        given(eventService.getEventById(1)).willReturn(event2);
+        given(eventService.updateEvent(1, eventTO)).willReturn(eventTO);
+        this.mvc.perform(put("/event/1")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",this.AUTH_HEADER)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(eventTO)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     void testGetEventById() throws Exception {
         given(eventService.getEventTOById(0)).willReturn(eventTO);
         this.mvc.perform(get("/event/byId/?id=0")

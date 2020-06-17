@@ -83,9 +83,9 @@ class EventManagementApplicationTest {
 
     @Test
     void shouldDeleteEvent() {
-        eventService.deleteEvent(toDelete);
+        eventService.deleteEvent(1);
         assertThrows(ResourceNotFoundException.class, () -> {
-            eventRepository.findById(toDelete);
+            eventRepository.findById(1);
         });
     }
 

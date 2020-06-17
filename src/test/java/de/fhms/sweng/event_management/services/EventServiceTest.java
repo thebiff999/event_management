@@ -127,7 +127,7 @@ public class EventServiceTest {
 
     }
 
-    @Test
+    /*@Test
     void shouldCreateEvent() {
         given(businessUserService.getBusinessUser(1)).willReturn(user);
         given(preferenceService.getPrefernceByValue("value")).willReturn(Optional.of(preference));
@@ -137,7 +137,7 @@ public class EventServiceTest {
         EventTO returnedEvent = eventService.createEvent(eventTO);
         assertEquals(eventTO, returnedEvent);
 
-    }
+    }*/
 
     @Test
     void shouldUpdateEvent() {

@@ -19,7 +19,6 @@ import java.util.Set;
  * Rest Controller for accessing the clientservice methods, only in active in dev environment for testing purposes
  */
 @RestController
-@Profile("dev")
 @RequestMapping("/user")
 public class UserRestController {
 

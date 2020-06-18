@@ -39,7 +39,7 @@ public class ClientService {
         LOGGER.debug("requesting jwt from login service with email: {} and password: {}", login.getEmail(), login.getPassword());
         String jwt = loginClient.loginUser(login);
         LOGGER.debug("JSON web token received by the login service: {}", jwt);
-        BusinessUserTO userTO = userClient.getUserById("Bearer" + jwt,id);
+        BusinessUserTO userTO = userClient.getUserById(jwt,id);
 
         if (!(userTO == null)) {
             return userTO;

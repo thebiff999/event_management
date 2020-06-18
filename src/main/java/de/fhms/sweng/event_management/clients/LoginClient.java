@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
-@FeignClient(url="${identity.url}/rest/users/login")
+@FeignClient(url="${identity.url}/rest/users/login",
+        name="LoginRestClient")
 public interface LoginClient {
 
     @PostMapping

@@ -1,5 +1,6 @@
 package de.fhms.sweng.event_management.services;
 
+import de.fhms.sweng.event_management.clients.ClientService;
 import de.fhms.sweng.event_management.dto.BusinessUserTO;
 import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
@@ -23,17 +24,20 @@ public class BusinessUserService {
 
     private BusinessUserRepository businessUserRepository;
     private MapperService mapper;
+    private ClientService clientService;
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     /**
      * constructor with dependency injection for BusinessUserRepository and MapperService
      * @param businessUserRepository BusinessUser Repository
      * @param mapperService MapperService
+     * @param clientService ClientService
      */
     @Autowired
-    BusinessUserService(BusinessUserRepository businessUserRepository, MapperService mapperService) {
+    BusinessUserService(BusinessUserRepository businessUserRepository, MapperService mapperService, ClientService clientService) {
         this.businessUserRepository = businessUserRepository;
         this.mapper = mapperService;
+        this.clientService = clientService;
     }
 
     /**
@@ -50,11 +54,18 @@ public class BusinessUserService {
             return optionalBusinessUser.get();
         }
         else {
-            LOGGER.error("Business User with id {} could not be found", id);
-            throw new ResourceNotFoundException("Business User not found");
+            try {
+                BusinessUserTO userTO = clientService.getUserById(id);
+                BusinessUser user = mapper.convertToUser(userTO);
+                return user;
+            }
+            catch (Throwable t) {
+                    LOGGER.error("Business User with id {} could not be found", id);
+                    throw new ResourceNotFoundException("Business User not found");
+                }
+            }
         }
 
-    }
 
     /**
      * returns the user with the requested mail
@@ -69,8 +80,15 @@ public class BusinessUserService {
             return optionalBusinessUser.get();
         }
         else {
-            LOGGER.error("Business User with mail {} could not be found", mail);
-            throw new ResourceNotFoundException("Business User not found");
+            try {
+                BusinessUserTO userTO = clientService.getUserByMail(mail);
+                BusinessUser user = mapper.convertToUser(userTO);
+                return user;
+            }
+            catch (Throwable t) {
+                LOGGER.error("Business User with mail {} could not be found", mail);
+                throw new ResourceNotFoundException("Business User not found");
+            }
         }
 
     }

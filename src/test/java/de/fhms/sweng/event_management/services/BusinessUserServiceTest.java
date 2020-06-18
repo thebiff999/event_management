@@ -1,5 +1,6 @@
 package de.fhms.sweng.event_management.services;
 
+import de.fhms.sweng.event_management.clients.ClientService;
 import de.fhms.sweng.event_management.dto.BusinessUserTO;
 import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
@@ -25,6 +26,9 @@ public class BusinessUserServiceTest {
     @Mock
     private MapperService mapperService;
 
+    @Mock
+    private ClientService clientService;
+
     private BusinessUser businessUser;
     private BusinessUserService userService;
 
@@ -36,7 +40,7 @@ public class BusinessUserServiceTest {
         businessUser.setFirstName("Tom");
         businessUser.setLastName("Mustermann");
 
-        userService = new BusinessUserService(userRepository, mapperService);
+        userService = new BusinessUserService(userRepository, mapperService, clientService);
     }
 
     @Test

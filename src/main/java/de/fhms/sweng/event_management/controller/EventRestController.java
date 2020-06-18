@@ -50,6 +50,7 @@ public class EventRestController {
         return eventService.getEvents();
     }
 
+
     /**
      * returns a set of events which include the name given as parameter
      * @param name the name which the event service will look up and return events by

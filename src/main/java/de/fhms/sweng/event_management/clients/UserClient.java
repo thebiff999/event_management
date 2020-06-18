@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(url="${users.url}/movies",
+@FeignClient(url="${users.url}/user",
         name="UserRestClient")
 public interface UserClient {
 

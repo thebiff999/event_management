@@ -2,6 +2,7 @@ package de.fhms.sweng.event_management.clients;
 
 import de.fhms.sweng.event_management.dto.BusinessUserTO;
 import de.fhms.sweng.event_management.dto.UserTO;
+import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,16 @@ public class ClientService {
         login = new UserTO(email, password);
         LOGGER.debug("requesting jwt from login service with email: {} and password: {}", login.getEmail(), login.getPassword());
         String jwt = loginClient.loginUser(login);
-        BusinessUserTO userTO = userClient.getUserById(jwt,id);
-        return userTO;
+        LOGGER.debug("JSON web token received by the login service: {}", jwt);
+        BusinessUserTO userTO = userClient.getUserById("Bearer" + jwt,id);
+
+        if (!(userTO == null)) {
+            return userTO;
+        }
+        else {
+            throw new ResourceNotFoundException("user could not be found");
+        }
+
     }
 
     public BusinessUserTO getUserByMail(String email){
@@ -46,7 +55,13 @@ public class ClientService {
         login = new UserTO(email, password);
         String jwt = loginClient.loginUser(login);
         BusinessUserTO userTO = userClient.getUserByMail(jwt,email);
-        return userTO;
+
+        if (!(userTO == null)) {
+            return userTO;
+        }
+        else {
+            throw new ResourceNotFoundException("user could not be found");
+        }
     }
 
 }

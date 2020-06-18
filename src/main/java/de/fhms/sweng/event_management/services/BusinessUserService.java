@@ -68,7 +68,9 @@ public class BusinessUserService {
 
 
     /**
-     * returns the user with the requested mail
+     * looks for the user with the requested mail in the repository
+     * also calls the User Management service via REST-API if the user is not in the repository
+     * trhows a ResourceNotFoundException if the user doesn't exist there either
      * @param mail search parameter
      * @return user with requested mail
      */

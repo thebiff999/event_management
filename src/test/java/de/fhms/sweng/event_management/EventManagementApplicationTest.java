@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @SpringBootTest
+@EnableFeignClients
 class EventManagementApplicationTest {
 
 

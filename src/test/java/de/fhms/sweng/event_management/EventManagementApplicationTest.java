@@ -8,6 +8,7 @@ import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import de.fhms.sweng.event_management.repositories.EventRepository;
 import de.fhms.sweng.event_management.services.EventService;
 import de.fhms.sweng.event_management.services.MapperService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringBootTest
 @EnableFeignClients
 class EventManagementApplicationTest {
@@ -66,6 +67,11 @@ class EventManagementApplicationTest {
         prefSet.add(pref);
 
         eventTO = new EventTO(3,1,"NewEvent","NewDescription", time, 3, 30.00, 30.00, prefSet);
+    }
+
+    @AfterEach
+    public void shutDown() {
+        appContext.close();
     }
 
 

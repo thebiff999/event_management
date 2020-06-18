@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface UserClient {
 
     @GetMapping
-    BusinessUserTO getUserById(@RequestHeader("Authorization") String jwt, @RequestParam("id") Integer id);
+    BusinessUserTO getUserById(@RequestHeader("Cookie") String jwt, @RequestParam("id") Integer id);
 
     @GetMapping
     BusinessUserTO getUserByMail(@RequestHeader("Authorization") String jwt, @RequestParam("email") String email);

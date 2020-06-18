@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClientService {
 
-    @Autowired
     private LoginClient loginClient;
 
-    @Autowired
     private UserClient userClient;
 
     @Value("${login.email}")
@@ -29,12 +27,12 @@ public class ClientService {
     private UserTO login;
 
 
-    public ClientService() {
+    public ClientService(LoginClient loginClient, UserClient userclient) {
+        this.loginClient = loginClient;
+        this.userClient = userclient;
     }
 
     public BusinessUserTO getUserById(int id){
-        LOGGER.debug("value for email: {}", email);
-        LOGGER.debug("value for password: {}", password);
         login = new UserTO(email, password);
         LOGGER.debug("requesting jwt from login service with email: {} and password: {}", login.getEmail(), login.getPassword());
         String jwt = loginClient.loginUser(login);
@@ -51,11 +49,13 @@ public class ClientService {
 
     }
 
-    public BusinessUserTO getUserByMail(String email){
-        LOGGER.debug("requesting jwt from login service with email: {} and password: {}", email, password);
+    public BusinessUserTO getUserByMail(String mail){
         login = new UserTO(email, password);
+        LOGGER.debug("requesting jwt from login service with email: {} and password: {}", login.getEmail(), login.getPassword());
         String jwt = loginClient.loginUser(login);
-        BusinessUserTO userTO = userClient.getUserByMail(jwt,email);
+        LOGGER.debug("JSON web token received by the login service: {}", jwt);
+        jwt = "Authorization=" + jwt;
+        BusinessUserTO userTO = userClient.getUserByMail(jwt,mail);
 
         if (!(userTO == null)) {
             return userTO;

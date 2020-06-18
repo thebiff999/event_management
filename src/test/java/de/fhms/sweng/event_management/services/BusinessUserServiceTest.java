@@ -91,7 +91,7 @@ public class BusinessUserServiceTest {
     void shouldNotGetBusinessUserByMail() {
         RuntimeException r = new RuntimeException();
         given(userRepository.findByMail("diesdas")).willReturn(Optional.empty());
-        given(clientService.getUserById(5)).willThrow(r);
+        given(clientService.getUserByMail("diesdas")).willThrow(r);
         assertThrows(ResourceNotFoundException.class, () -> {
             userService.getBusinessUser("diesdas");
         });

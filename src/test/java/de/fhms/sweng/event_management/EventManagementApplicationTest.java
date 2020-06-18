@@ -69,10 +69,6 @@ class EventManagementApplicationTest {
         eventTO = new EventTO(3,1,"NewEvent","NewDescription", time, 3, 30.00, 30.00, prefSet);
     }
 
-    @AfterEach
-    public void shutDown() {
-        appContext.close();
-    }
 
 
     /*@Test

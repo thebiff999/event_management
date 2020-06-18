@@ -79,7 +79,9 @@ public class BusinessUserServiceTest {
 
     @Test
     void shouldNotGetBusinessUserById() {
+        RuntimeException r = new RuntimeException();
         given(userRepository.findById(5)).willReturn(Optional.empty());
+        given(clientService.getUserById(5)).willThrow(r);
         assertThrows(ResourceNotFoundException.class, () -> {
             userService.getBusinessUser(5);
         });
@@ -87,7 +89,9 @@ public class BusinessUserServiceTest {
 
     @Test
     void shouldNotGetBusinessUserByMail() {
+        RuntimeException r = new RuntimeException();
         given(userRepository.findByMail("diesdas")).willReturn(Optional.empty());
+        given(clientService.getUserById(5)).willThrow(r);
         assertThrows(ResourceNotFoundException.class, () -> {
             userService.getBusinessUser("diesdas");
         });

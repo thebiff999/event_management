@@ -23,7 +23,6 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)

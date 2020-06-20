@@ -1,5 +1,6 @@
 package de.fhms.sweng.event_management.security;
 
+import de.fhms.sweng.event_management.entities.BusinessUser;
 import de.fhms.sweng.event_management.exceptions.ResourceNotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.aspectj.lang.annotation.Before;
@@ -10,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.InputStream;
@@ -31,6 +34,9 @@ public class JwtTokenProviderTest {
     private PrivateKey privateKey;
     private PublicKey publicKey;
     private String token;
+    private BusinessUser userEntity;
+    private User userDetails;
+    private UsernamePasswordAuthenticationToken authToken;
 
     @InjectMocks
     private JwtTokenProvider provider;
@@ -46,7 +52,9 @@ public class JwtTokenProviderTest {
         username="tom@fhms.de";
         role="EUSER";
         provider = new JwtTokenProvider();
-
+        userEntity = new BusinessUser();
+        userEntity.setMail("tom@fhms.de");
+        userDetails = (User) User.withUsername(userEntity.getMail()).password("***").authorities(userEntity.getRole()).build();
         token="eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0b21AZmhtcy5kZSIsImF1dGgiOiJFVVNFUiIsImlhdCI6MTU5MjY4MDE2OSwiZXhwIjoxNTkyNzg4MTY5fQ.N4akOphkOSezmyQ_I8jSTWe3csuAlI73K8OWevD3ZBrHcOA8fCUZQK1iZQF9Ktt_yHa8JXZXR9PrG6uqzufv9fUcNwfdsJsKYtdmVX4tj2-XVDH5DKD08MvNMNeGo9VUeDLWGwAwdVkQoOOvGCJHZ-CHiz3g-XaANNVd3johJInbJ-Omchr0dtzmCsUs4B-j5JUR5QihDnrP1lqFhulsnT_sX1_13KBT-w0m2E0U3nwVHx_vbsDERH0qnfLym1xoWAjEFpasTbJf-JhNMd2pR9X_MYkCPg80abqe1fr5qONs-yDk9d_iZIOl80r_HKcWA5L2O3a0wnatqpf5UyTUUQ";
 
         ReflectionTestUtils.setField(provider, "validityTime", 360000);
@@ -63,6 +71,8 @@ public class JwtTokenProviderTest {
         byte[] encodedPublicKey = IOUtils.toByteArray(inputStream);
         X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(encodedPublicKey);
         this.publicKey = keyFactory.generatePublic(publicKeySpec);
+
+        authToken = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 
     }
 
@@ -84,6 +94,19 @@ public class JwtTokenProviderTest {
         assertThrows(ResourceNotFoundException.class, () -> {
             provider.isValidJWT("12345");
         });
+    }
+
+    @Test
+    void getAuthenticationTest() {
+        given(userDetailsService.loadUserByUsername("tom@fhms.de")).willReturn(userDetails);
+        given(keys.getPublicKey()).willReturn(publicKey);
+        assertEquals(authToken, provider.getAuthentication(token));
+    }
+
+    @Test
+    void getUsernameTest() {
+        given(keys.getPublicKey()).willReturn(publicKey);
+        assertEquals("tom@fhms.de", provider.getUsername(token));
     }
 
 }

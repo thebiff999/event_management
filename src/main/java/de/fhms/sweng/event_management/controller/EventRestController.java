@@ -91,7 +91,7 @@ public class EventRestController {
      */
     @GetMapping("/byUser")
     @PreAuthorize("hasAuthority('EUSER')")
-    public Set<EventTO> getEventByUser(@RequestHeader String Authorization) {
+    public Set<EventTO> getEventByUser(@CookieValue(name="Authorization") String Authorization) {
         String mail = jwtTokenProvider.getUsername(Authorization.substring(7));
         LOGGER.info("GET-Request on /byUser recieved from user {}", mail);
         return eventService.getAllEventsByUser(mail);
@@ -117,7 +117,7 @@ public class EventRestController {
     @PostMapping("")
     @PreAuthorize("hasAuthority('EUSER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public EventTO createEvent(@RequestBody EventTO newEvent, @RequestHeader String Authorization) {
+    public EventTO createEvent(@RequestBody EventTO newEvent, @CookieValue(name="Authorization") String Authorization) {
         LOGGER.info("POST-Request recieved");
         String mail = jwtTokenProvider.getUsername(Authorization.substring(7));
         newEvent.setBusinessUserId(userService.getBusinessUser(mail).getId());
@@ -132,7 +132,7 @@ public class EventRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('EUSER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEvent(@PathVariable(value="id")int id, @RequestHeader String Authorization) {
+    public void deleteEvent(@PathVariable(value="id")int id, @CookieValue(name="Authorization") String Authorization) {
         LOGGER.info("DELETE-Mapping recieved with id {}", id);
         LOGGER.debug("Checking if the event with id {} belongs to the requesting user {}", id, Authorization.substring(7));
         String mail = jwtTokenProvider.getUsername(Authorization.substring(7));
@@ -157,7 +157,7 @@ public class EventRestController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('EUSER')")
     @ResponseStatus(HttpStatus.OK)
-    public EventTO updateEvent(@PathVariable("id") int id, @RequestBody EventTO updatedEvent, @RequestHeader String Authorization) {
+    public EventTO updateEvent(@PathVariable("id") int id, @RequestBody EventTO updatedEvent, @CookieValue(name="Authorization") String Authorization) {
         LOGGER.info("PUT-Mapping recieved with id {}", id);
         LOGGER.debug("Checking if the event with id {} belongs to the requesting user {}", id, Authorization.substring(7));
         String mail = jwtTokenProvider.getUsername(Authorization.substring(7));

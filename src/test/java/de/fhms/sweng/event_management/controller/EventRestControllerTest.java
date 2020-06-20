@@ -68,6 +68,7 @@ public class EventRestControllerTest {
     private static final String USERNAME = "max@mustermann.de";
     private final String AUTH_HEADER = "Bearer ANY-JWT-STRING";
     private ResourceNotFoundException e;
+    private Cookie cookie;
 
     @BeforeEach
     public void setUp() {
@@ -146,7 +147,7 @@ public class EventRestControllerTest {
         given(jwtTokenProvider.resolveToken(any(HttpServletRequest.class))).willReturn(AUTH_HEADER.substring(7));
         given(jwtTokenProvider.getAuthentication(any(String.class))).willReturn(new UsernamePasswordAuthenticationToken(userDetails, "s", userDetails.getAuthorities()));
 
-
+        cookie = new Cookie("Authorization", AUTH_HEADER);
 
     }
 
@@ -158,6 +159,7 @@ public class EventRestControllerTest {
         this.mvc.perform(post("/event")
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization",this.AUTH_HEADER)
+                .cookie(cookie)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(eventTO)))
                 .andExpect(status().isCreated());
@@ -171,6 +173,7 @@ public class EventRestControllerTest {
         this.mvc.perform(put("/event/1")
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization",this.AUTH_HEADER)
+                .cookie(cookie)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(eventTO)))
                 .andExpect(status().isOk());
@@ -184,6 +187,7 @@ public class EventRestControllerTest {
         this.mvc.perform(put("/event/1")
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization",this.AUTH_HEADER)
+                .cookie(cookie)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(eventTO)))
                 .andExpect(status().isForbidden());
@@ -278,7 +282,8 @@ public class EventRestControllerTest {
         given(eventService.getAllEventsByUser("test@test.de")).willReturn(eventTOSet);
         this.mvc.perform(get("/event/byUser")
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization",this.AUTH_HEADER))
+                .header("Authorization",this.AUTH_HEADER)
+                .cookie(cookie))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("*.id").value(0))
                 .andExpect(jsonPath("*.name").value("TestEvent1"));
@@ -290,7 +295,8 @@ public class EventRestControllerTest {
         given(eventService.getEventById(1)).willReturn(event);
         this.mvc.perform(delete("/event/1")
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization",this.AUTH_HEADER))
+                .header("Authorization",this.AUTH_HEADER)
+                .cookie(cookie))
                 .andExpect(status().isNoContent());
     }
 
@@ -300,7 +306,8 @@ public class EventRestControllerTest {
         given(eventService.getEventById(2)).willReturn(event2);
         this.mvc.perform(delete("/event/2")
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization",this.AUTH_HEADER))
+                .header("Authorization",this.AUTH_HEADER)
+                .cookie(cookie))
                 .andExpect(status().isForbidden());
     }
 

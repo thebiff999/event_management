@@ -80,7 +80,7 @@ public class EventRestController {
     @GetMapping("/healthcheck")
     @ResponseStatus(HttpStatus.OK)
     public String getTest() {
-        LOGGER.info("GET-Resquest on /healthcheck recieved");
+        LOGGER.trace("GET-Resquest on /healthcheck recieved");
         return "Event Microservice is available";
     }
 
@@ -92,7 +92,7 @@ public class EventRestController {
     @GetMapping("/byUser")
     @PreAuthorize("hasAuthority('EUSER')")
     public Set<EventTO> getEventByUser(@CookieValue(name="Authorization") String Authorization) {
-        String mail = jwtTokenProvider.getUsername(Authorization.substring(7));
+        String mail = jwtTokenProvider.getUsername(Authorization);
         LOGGER.info("GET-Request on /byUser recieved from user {}", mail);
         return eventService.getAllEventsByUser(mail);
     }

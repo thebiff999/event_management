@@ -271,46 +271,6 @@
 			"response": []
 		},
 		{
-			"name": "delete event by id (PathVariable)",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "a3333dd1-2b42-49fb-be50-cd62c8209e3d",
-						"exec": [
-							"pm.test(\"test all events\", function (){",
-							"    pm.response.to.have.status(204);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Cookie",
-						"value": "Authorization={{token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8092/event/3",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8092",
-					"path": [
-						"event",
-						"3"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "delete event by id (PathVariable) Fail",
 			"event": [
 				{
@@ -471,7 +431,7 @@
 	],
 	"variable": [
 		{
-			"id": "c0c2738e-67ca-4d70-99ca-24c25c1d3883",
+			"id": "c003706e-9284-4182-9acb-69f1e23a528b",
 			"key": "token",
 			"value": "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0b21AZmhtcy5kZSIsImF1dGgiOiJFVVNFUiIsImlhdCI6MTU5MTg5MzQ2NywiZXhwIjoxNTkyMDAxNDY3fQ.LnJK1uRpOt-wK8kG7YlWRAof0_ZaVlJe13VeiJcliBMJ551vPmtrcPG2DgG1Tc-gMZfIluVL2OJZcR8wwfaZsScK7UMvatCgDJZHRS_lEH8fSwDCmHhw_x_HW7J4R9C6VleBLTn_rLeSjgNSfW55WVloiXRid57KjUyXVDKGViELpu58VcJXcEjbJbhTefUl5z1H1nYkjvdHQ-xU2yZ3cHodMwhx0enrYoK6K2JcOZri6IIihaheN_th7Vb8s5D32vY1x-O4MCx7MJ6TKaV0ES43AEujfreh3BQOOZfVFMZ49bl7bI9c6rrH1zCIQFk_Tz4T3hW-RAyvwN3jDveCcw",
 			"type": "string"

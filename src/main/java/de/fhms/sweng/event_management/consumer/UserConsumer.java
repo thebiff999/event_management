@@ -10,6 +10,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
 /**
  * This class receives new users and tells the business user service to add them in the database
  * @author Dennis Heuermann
@@ -34,6 +36,7 @@ public class UserConsumer {
      * @param businessUserTO the business user dto to add to the database
      */
     @RabbitListener (queues = "${amqp.rabbitmq.queue.euser.save}")
+    @Transactional
         public void recieveNewBusinessUser(BusinessUserTO businessUserTO) {
         LOGGER.info("recieved message with new user with id {}", businessUserTO.getId());
         LOGGER.debug("Values of businessUserTO:");

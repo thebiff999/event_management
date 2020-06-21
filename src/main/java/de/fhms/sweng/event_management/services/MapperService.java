@@ -13,9 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 /**
  * Spring service that converts data transfer objects into entities and vice versa
@@ -75,6 +78,7 @@ public class MapperService {
      * @param businessUserTO dto to be converted
      * @return converted BusinessUser entitiy
      */
+    @Transactional(SUPPORTS)
     public BusinessUser convertToUser(BusinessUserTO businessUserTO) {
 
         LOGGER.info("convert BusinessUserTO to BusinessUser");

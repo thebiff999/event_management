@@ -8,10 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 /**
  * Spring service that handles tasks related to preference entities
@@ -45,6 +49,8 @@ public class PreferenceService {
      * iterates through the preference set of the event parameter and creates preferences that are not yet in the repository
      * @param event event whose preferences should be added
      */
+
+    @Transactional(SUPPORTS)
     public void createPreferencesFromEvent(EventTO event) {
         LOGGER.info("creating preferences from event");
         if (event.hasPreferences()) {

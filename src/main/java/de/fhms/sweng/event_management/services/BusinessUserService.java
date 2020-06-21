@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.Set;
 
@@ -99,6 +100,7 @@ public class BusinessUserService {
      * creates BusinessUser entity from Data Transfer Object and adds it to the repository
      * @param businessUserTO DTO object from which BusinessUser entity will be created
      */
+    @Transactional
     public void createBusinessUser(BusinessUserTO businessUserTO) {
         businessUserRepository.save(mapper.convertToUser(businessUserTO));
         LOGGER.info("Business User with id {} created", businessUserTO.getId());

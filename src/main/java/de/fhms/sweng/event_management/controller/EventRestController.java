@@ -119,7 +119,7 @@ public class EventRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public EventTO createEvent(@RequestBody EventTO newEvent, @CookieValue(name="Authorization") String Authorization) {
         LOGGER.info("POST-Request recieved");
-        String mail = jwtTokenProvider.getUsername(Authorization.substring(7));
+        String mail = jwtTokenProvider.getUsername(Authorization);
         newEvent.setBusinessUserId(userService.getBusinessUser(mail).getId());
         return eventService.createEvent(newEvent);
     }
@@ -135,7 +135,7 @@ public class EventRestController {
     public void deleteEvent(@PathVariable(value="id")int id, @CookieValue(name="Authorization") String Authorization) {
         LOGGER.info("DELETE-Mapping recieved with id {}", id);
         LOGGER.debug("Checking if the event with id {} belongs to the requesting user {}", id, Authorization.substring(7));
-        String mail = jwtTokenProvider.getUsername(Authorization.substring(7));
+        String mail = jwtTokenProvider.getUsername(Authorization);
         int userId = userService.getBusinessUser(mail).getId();
         int ownerId = eventService.getEventById(id).getBusinessUserId();
         if (userId == ownerId) {
@@ -160,7 +160,7 @@ public class EventRestController {
     public EventTO updateEvent(@PathVariable("id") int id, @RequestBody EventTO updatedEvent, @CookieValue(name="Authorization") String Authorization) {
         LOGGER.info("PUT-Mapping recieved with id {}", id);
         LOGGER.debug("Checking if the event with id {} belongs to the requesting user {}", id, Authorization.substring(7));
-        String mail = jwtTokenProvider.getUsername(Authorization.substring(7));
+        String mail = jwtTokenProvider.getUsername(Authorization);
         int userId = userService.getBusinessUser(mail).getId();
         int ownerId = eventService.getEventById(id).getBusinessUserId();
         if (userId == ownerId) {

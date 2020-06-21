@@ -1,7 +1,7 @@
 INSERT INTO business_users VALUES
-(0, 'Test-User Vorname', 'Test-User Nachname', 'mail@test.com', 'EUSER'),
-(1, 'tom', 'mustermann', 'tom@fhms.de', 'EUSER'),
-(2, 'moritz', 'mustermann', 'moritz@mustermann.de', 'EUSER');
+(1, 'Test-User Vorname', 'Test-User Nachname', 'mail@test.com', 'EUSER'),
+(2, 'tom', 'mustermann', 'tom@fhms.de', 'EUSER'),
+(3, 'moritz', 'mustermann', 'moritz@mustermann.de', 'EUSER');
 
 INSERT INTO locations (id, latitude, longitude) VALUES
 (1, 50.00, 50.00),

@@ -73,13 +73,15 @@ public class EventService {
         BusinessUser businessUser = businessUserService.getBusinessUser(eventTO.getBusinessUserId());
         event.setBusinessUserId(businessUser);
         //map preferences
-        LOGGER.trace(" mapping preferences");
-        LOGGER.trace("  create prefrences from eventTO");
-        preferenceService.createPreferencesFromEvent(eventTO);
-        for (Preference p : eventTO.getPreferences()) {
-            Preference preference = preferenceService.getPrefernceByValue(p.getValue()).get();
-            LOGGER.trace("  mapping preference {}-{}", preference.getId(), preference.getValue());
-            event.addPreference(preference);
+        if (eventTO.hasPreferences()) {
+            LOGGER.trace(" mapping preferences");
+            LOGGER.trace("  create prefrences from eventTO");
+            preferenceService.createPreferencesFromEvent(eventTO);
+            for (Preference p : eventTO.getPreferences()) {
+                Preference preference = preferenceService.getPrefernceByValue(p.getValue()).get();
+                LOGGER.trace("  mapping preference {}-{}", preference.getId(), preference.getValue());
+                event.addPreference(preference);
+            }
         }
         event = eventRepository.save(event);
         LOGGER.info("new event with id {} successfully created", event.getId());

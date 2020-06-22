@@ -296,7 +296,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://test-sweng-sweng-team01-event-management.wi-k8s.fh-muenster.de/event/5",
+					"raw": "http://test-sweng-sweng-team01-event-management.wi-k8s.fh-muenster.de/event/9999",
 					"protocol": "http",
 					"host": [
 						"test-sweng-sweng-team01-event-management",
@@ -306,7 +306,7 @@
 					],
 					"path": [
 						"event",
-						"5"
+						"9999"
 					]
 				}
 			},
@@ -431,7 +431,7 @@
 	],
 	"variable": [
 		{
-			"id": "c003706e-9284-4182-9acb-69f1e23a528b",
+			"id": "59f729a4-5e57-482a-8d90-7f4b7bc1e8eb",
 			"key": "token",
 			"value": "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0b21AZmhtcy5kZSIsImF1dGgiOiJFVVNFUiIsImlhdCI6MTU5MTg5MzQ2NywiZXhwIjoxNTkyMDAxNDY3fQ.LnJK1uRpOt-wK8kG7YlWRAof0_ZaVlJe13VeiJcliBMJ551vPmtrcPG2DgG1Tc-gMZfIluVL2OJZcR8wwfaZsScK7UMvatCgDJZHRS_lEH8fSwDCmHhw_x_HW7J4R9C6VleBLTn_rLeSjgNSfW55WVloiXRid57KjUyXVDKGViELpu58VcJXcEjbJbhTefUl5z1H1nYkjvdHQ-xU2yZ3cHodMwhx0enrYoK6K2JcOZri6IIihaheN_th7Vb8s5D32vY1x-O4MCx7MJ6TKaV0ES43AEujfreh3BQOOZfVFMZ49bl7bI9c6rrH1zCIQFk_Tz4T3hW-RAyvwN3jDveCcw",
 			"type": "string"
